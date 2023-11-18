@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
-    return "Hello world!"
+def front_page():
+    return "Hello!"
 
 
 # your routes here
