@@ -44,8 +44,17 @@ def add_location():
     lati = body.get("latitude")
     name = body.get("name")
     description = body.get("description")
-    features = body.get("features")
-    #TODO init
+    location = Location(
+        longitude = long,
+        latitude = lati,
+        name = name,
+        description = description
+                        )
+    
+    db.session.add(location)
+    db.session.commit()
+    
+    return success_reponse(location.serialize(), 201)
 
     
 @app.route("/api/features/add/", methods=["POST"])
@@ -56,6 +65,9 @@ def add_feature():
     body = json.loads(request.data)
     name = body.get("name")
     feature = Feature(name = name)
+
+    db.session.add(feature)
+    db.session.commit()
 
     return success_reponse(feature.serialize(), 201)
 
@@ -87,6 +99,7 @@ def get_post(location_id):
     """
     body = json.loads(request.data)
     user_id = body.get("user_id")
+    #TODO get post
 
 
 
