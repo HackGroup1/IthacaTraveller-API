@@ -1,0 +1,4 @@
+.env
+IthacaTraveller.db
+__pycache__
+venv

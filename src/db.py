@@ -61,7 +61,6 @@ class Location(db.Model):
     latitude = db.Column(db.Double, nullable = False)
     name = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
-    feature = db.Column(db.String, nullable = False)
     posts = db.relationship("Post", cascade = "delete")
     features = db.relationship("Feature", secondary = assoc_features_locations, back_populates = "locations")
 
@@ -74,7 +73,6 @@ class Location(db.Model):
         self.latitude = kwargs.get("latitude", 0.0)
         self.name = kwargs.get("name", "")
         self.description = kwargs.get("description", "")
-        self.feature = kwargs.get("feature", "")
 
     def serialize(self):
         """
