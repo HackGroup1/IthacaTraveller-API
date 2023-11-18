@@ -4,6 +4,7 @@ import db
 from flask import Flask
 from flask import request
 from db import Location
+from db import Feature
 
 DB = db.DatabaseDriver()
 
@@ -33,7 +34,7 @@ def front_page():
 
 
 #routes here
-@app.route("/api/add/", methods=["POST"])
+@app.route("/api/location/add/", methods=["POST"])
 def add_location():
     """
     Enpoint for adding location
@@ -46,6 +47,18 @@ def add_location():
     features = body.get("features")
     #TODO init
     
+@app.route("/api/feature/add/", methods=["POST"])
+def add_feature():
+    """
+    Enpoint for adding locations
+    """
+    body = json.loads(request.data)
+    name = body.get("name")
+    feature = Feature(name = name)
+
+    return success_reponse(feature.serialize(), 201)
+
+
 
 @app.route("/api/location/<int:location_id>/")
 def get_location_by_id(location_id):
@@ -53,6 +66,7 @@ def get_location_by_id(location_id):
     Endpoint for getting location details by its id
     """
     location = Location.query.filter_by(id=location_id).first()
+    #TODO return serialize
 
 
 
@@ -64,7 +78,7 @@ def get_post(location_id):
     """
     body = json.loads(request.data)
     user_id = body.get("user_id")
-    
+
 
 
 
