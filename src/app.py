@@ -51,8 +51,8 @@ def add_location():
         description = description
                         )
     
-    if location is None:
-        return failure_response("error in creating location", 400)
+    db.session.add(location)
+    db.session.commit()
     
     return success_reponse(location.serialize(), 201)
 
@@ -65,6 +65,9 @@ def add_feature():
     body = json.loads(request.data)
     name = body.get("name")
     feature = Feature(name = name)
+
+    db.session.add(feature)
+    db.session.commit()
 
     return success_reponse(feature.serialize(), 201)
 
