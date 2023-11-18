@@ -47,6 +47,7 @@ def add_location():
     features = body.get("features")
     #TODO init
     
+    
 @app.route("/api/feature/add/", methods=["POST"])
 def add_feature():
     """
