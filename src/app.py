@@ -3,7 +3,7 @@ import json
 import db
 from flask import Flask
 from flask import request
-from db import Spot
+from db import Location
 
 DB = db.DatabaseDriver()
 
@@ -33,8 +33,11 @@ def front_page():
 
 
 #routes here
-@app.route("/api/add", methods=["POST"])
-def add_spot():
+@app.route("/api/add/", methods=["POST"])
+def add_location():
+    """
+    Enpoint for adding location
+    """
     body = json.loads(request.data)
     long = body.get("longitude")
     lati = body.get("latitude")
@@ -44,9 +47,25 @@ def add_spot():
     #TODO init
     
 
-@app.route("/api/spot/<int:spot_id>")
-def get_spot_by_id(spot_id):
-    spot = Spot.query.filter_by(id=spot_id).first()
+@app.route("/api/location/<int:location_id>/")
+def get_location_by_id(location_id):
+    """
+    Endpoint for getting location details by its id
+    """
+    location = Location.query.filter_by(id=location_id).first()
+
+
+
+@app.route("/api/post/<int:location_id>/")
+def get_post(location_id):
+    """
+    Endpoint for getting posts under specific location by id
+    Requires user id
+    """
+    body = json.loads(request.data)
+    user_id = body.get("user_id")
+    
+
 
 
 if __name__ == "__main__":
