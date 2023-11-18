@@ -77,6 +77,9 @@ def get_location_id_by_feature(feature):
     Endpoint for getting location assoicated with feature by feature name
     """
     feature = Feature.query.filter_by(name=feature).first()
+    if feature is None:
+        return failure_response("feature not found", 404)
+    
     locations = feature.serialize().get("locations")
 
     return success_reponse(locations)
