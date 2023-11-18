@@ -44,8 +44,17 @@ def add_location():
     lati = body.get("latitude")
     name = body.get("name")
     description = body.get("description")
-    features = body.get("features")
-    #TODO init
+    location = Location(
+        longitude = long,
+        latitude = lati,
+        name = name,
+        description = description
+                        )
+    
+    if location is None:
+        return failure_response("error in creating location", 400)
+    
+    return success_reponse(location.serialize(), 201)
 
     
 @app.route("/api/features/add/", methods=["POST"])
@@ -87,6 +96,7 @@ def get_post(location_id):
     """
     body = json.loads(request.data)
     user_id = body.get("user_id")
+    #TODO get post
 
 
 
