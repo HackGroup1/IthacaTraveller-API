@@ -14,24 +14,30 @@ assoc_course_students = db.Table(
     db.Column("student_id", db.Integer, db.ForeignKey("user.id"))
 )
 
-class Course(db.Model):
+class Spot(db.Model):
     """
-    Course Model
+    Spot Model
     """
-    __tablename__ = "course"
+    __tablename__ = "spot"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    code = db.Column(db.String, nullable = False)
+    longitude = db.Column(db.Double, nullable = False)
+    latitude = db.Column(db.Double, nullable = False)
     name = db.Column(db.String, nullable = False)
-    assignments = db.relationship("Assignment", cascade = "delete")
-    instructors = db.relationship("User", secondary = assoc_course_instructors, back_populates = "instructing")
-    students = db.relationship("User", secondary = assoc_course_students, back_populates = "studying")
+    description = db.Column(db.String, nullable = False)
+    # image_name = db.Column(db.String, nullable = False)
+    feature = db.Column(db.String, nullable = False)
+    posts = db.relationship("Post", cascade = "delete")
+
     def __init__(self, **kwargs):
         """
-        Initialize a course object
+        Initialize a spot object
         """
 
-        self.code = kwargs.get("code", "")
+        self.longitude = kwargs.get("longitude", 0.0)
+        self.latitude = kwargs.get("latitude", 0.0)
         self.name = kwargs.get("name", "")
+        self.description = kwargs.get("description", "")
+        self.feature = kwargs.get("feature", "")
 
     def serialize(self):
         """
@@ -39,11 +45,11 @@ class Course(db.Model):
         """
         return {
             "id": self.id,
-            "code": self.code,
+            "longitude": self.longitude,
+            "latitude": self.latitude,
             "name": self.name,
-            "assignments": [assignment.simple_serialize() for assignment in self.assignments],
-            "instructors": [instructor.simple_serialize() for instructor in self.instructors],
-            "students": [student.simple_serialize() for student in self.students]
+            "description": self.description,
+            "posts": [post.serialize() for post in self.posts]
         }
 
     def simple_serialize(self):
@@ -52,50 +58,49 @@ class Course(db.Model):
         """
         return {
             "id": self.id,
-            "code": self.code,
-            "name": self.name
+            "longitude": self.longitude,
+            "latitude": self.latitude,
+            "name": self.name,
+            "description": self.description,
         }
     
-class Assignment(db.Model):
+class Post(db.Model):
     """
-    Assignment Model
+    Post Model
     """
-    __tablename__ = "assignment"
+    __tablename__ = "post"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    title = db.Column(db.String, nullable = False)
-    due_date = db.Column(db.Integer, nullable = False)
-    course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable = False)
+    comment = db.Column(db.String, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable = False)
+    likes = db.relationship("Course", secondary = assoc_course_students, back_populates = "students")
 
     def __init__(self, **kwargs):
         """
-        Initialize an assignment object
+        Initialize a post object
         """
 
-        self.title = kwargs.get("title", "")
-        self.due_date = kwargs.get("due_date", "")
-        self.course_id = kwargs.get("course_id")
+        self.netid = kwargs.get("netid", "")
+        self.name = kwargs.get("name", "")
 
     def serialize(self):
         """
-        Serialize an assignment object
+        Serialize a course object
         """
-        course = Course.query.filter_by(id = self.course_id).first()
-        
         return {
             "id": self.id,
-            "title": self.title,
-            "due_date": self.due_date,
-            "course": course.simple_serialize()
+            "name": self.name,
+            "netid": self.netid,
+            "courses": [course.simple_serialize() for course in (self.instructing + self.studying)]
         }
     
     def simple_serialize(self):
         """
-        Serialize an assignment object without course field
+        Serialize a course object without courses field
         """
         return {
             "id": self.id,
-            "title": self.title,
-            "due_date": self.due_date
+            "name": self.name,
+            "netid": self.netid
         }
 
 class User(db.Model):
