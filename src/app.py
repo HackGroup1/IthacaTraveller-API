@@ -34,7 +34,7 @@ def front_page():
 
 
 #routes here
-@app.route("/api/location/add/", methods=["POST"])
+@app.route("/api/locations/add/", methods=["POST"])
 def add_location():
     """
     Enpoint for adding location
@@ -46,9 +46,9 @@ def add_location():
     description = body.get("description")
     features = body.get("features")
     #TODO init
+
     
-    
-@app.route("/api/feature/add/", methods=["POST"])
+@app.route("/api/features/add/", methods=["POST"])
 def add_feature():
     """
     Enpoint for adding locations
@@ -59,9 +59,17 @@ def add_feature():
 
     return success_reponse(feature.serialize(), 201)
 
+@app.route("/api/locations/<feature>")
+def get_location_id_by_feature(feature):
+    """
+    Endpoint for getting location assoicated with feature by feature name
+    """
+    feature = Feature.query.filter_by(name=feature).first()
+    locations = feature.serialize().get("locations")
 
+    return success_reponse(locations)
 
-@app.route("/api/location/<int:location_id>/")
+@app.route("/api/locations/<int:location_id>/")
 def get_location_by_id(location_id):
     """
     Endpoint for getting location details by its id
@@ -71,7 +79,7 @@ def get_location_by_id(location_id):
 
 
 
-@app.route("/api/post/<int:location_id>/")
+@app.route("/api/posts/<int:location_id>/")
 def get_post(location_id):
     """
     Endpoint for getting posts under specific location by id
