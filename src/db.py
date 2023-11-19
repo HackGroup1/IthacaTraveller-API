@@ -109,7 +109,7 @@ class Post(db.Model):
     comment = db.Column(db.String, nullable = False)
     location_id = db.Column(db.Integer, db.ForeignKey("location.id"), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable = False)
-    likes = db.relationship("User", secondary = assoc_posts_users_likes, back_populates = "posts_liked")
+    liked_users = db.relationship("User", secondary = assoc_posts_users_likes, back_populates = "posts_liked")
 
     def __init__(self, **kwargs):
         """
@@ -122,23 +122,25 @@ class Post(db.Model):
 
     def serialize(self):
         """
-        Serialize a course object
+        Serialize a post object
         """
         return {
             "id": self.id,
-            "name": self.name,
-            "netid": self.netid,
-            "courses": [course.simple_serialize() for course in (self.instructing + self.studying)]
+            "comment": self.comment,
+            "location_id": self.location_id,
+            "user_id": self.user_id,
+            "liked_users": [user.simple_serialize() for user in self.liked_users]
         }
     
     def simple_serialize(self):
         """
-        Serialize a course object without courses field
+        Serialize a post object
         """
         return {
             "id": self.id,
-            "name": self.name,
-            "netid": self.netid
+            "comment": self.comment,
+            "location_id": self.location_id,
+            "user_id": self.user_id
         }
 
 class User(db.Model):
@@ -151,7 +153,7 @@ class User(db.Model):
     username = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
     posts = db.relationship("Post", cascade = "delete")
-    posts_liked = db.relationship("Post", secondary = assoc_posts_users_likes, back_populates = "likes")
+    posts_liked = db.relationship("Post", secondary = assoc_posts_users_likes, back_populates = "liked_users")
 
     def __init__(self, **kwargs):
         """
@@ -163,13 +165,13 @@ class User(db.Model):
 
     def serialize(self):
         """
-        Serialize a course object
+        Serialize a user object
         """
         return {
             "id": self.id,
-            "name": self.name,
-            "netid": self.netid,
-            "courses": [course.simple_serialize() for course in (self.instructing + self.studying)]
+            "username": self.name,
+            "posts": [post.serialize() for post in self.posts],
+            "post_liked": [post.serialize() for post in self.posts_liked]
         }
     
     def simple_serialize(self):
