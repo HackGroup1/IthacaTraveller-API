@@ -1,11 +1,9 @@
 import json
 
-from db import db
+from db import db, Location, Feature, Post, User
 from flask import Flask
 from flask import request
-from db import Location
-from db import Feature
-from db import Post
+
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
@@ -258,8 +256,42 @@ def delete_post_by_id(post_id):
     return success_response(post.serialize())
 
 
-#--------- Posts Routes ------------
+#--------- Users Routes ------------
+@app.route("/api/users/")
+def get_all_users():
+    """
+    Endpoint for getting all users
+    """
 
+    users = [user.serialize() for user in User.query.all()]
+    return success_response({"users": users})
+
+
+@app.route("/api/users/", methods = ["POST"])
+def add_user():
+    """
+    Endpoint for adding users
+    """
+    
+    body = json.loads(request.data)
+    username = body.get("username")
+    password = body.get("password")
+
+    if username or password is None:
+        return failure_response("missing parameter", 400)
+
+    hash_password = hash_password(password)
+
+    user = User(username = username,
+                password = hash_password
+                )
+    
+    db.session.add(user)
+    db.session.commit()
+
+    return success_response(user.serialize())
+    
+@app.route("/api/users/")
 
 
 if __name__ == "__main__":
