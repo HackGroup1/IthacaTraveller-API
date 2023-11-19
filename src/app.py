@@ -113,6 +113,7 @@ def get_location_id_by_feature(feature):
     res = {"locations":locations}
     return success_reponse(res)
 
+
 @app.route("/api/locations/<int:location_id>/")
 def get_location_by_id(location_id):
     """
