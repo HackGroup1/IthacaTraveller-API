@@ -1,6 +1,11 @@
-from app import failure_response, success_response
 from flask import Flask, request, send_file
 import os
+
+def success_response(body, code = 200):
+    return json.dumps(body), code
+
+def failure_response(message, code = 404):
+    return json.dumps({"error": message}), code
 
 def image_route(app):
     app.config['IMAGE_FOLDER_POST'] = os.path.join(os.path.dirname(__file__), 'images', 'posts')

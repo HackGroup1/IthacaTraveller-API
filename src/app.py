@@ -6,11 +6,14 @@ from db import db, Location, Feature, Post, User
 from flask import Flask, request, send_file
 from hashlib import pbkdf2_hmac
 
+from image import image_route
+
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
 salting = os.environ.get("SALTING")
 iterations = os.environ.get("HASHING_ITERATIONS")
+image_route(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
