@@ -374,9 +374,6 @@ def verify_user():
         return success_response(res)
 
 
-    users = [user.serialize() for user in User.query.all()]
-    return success_response({"users": users})
-
 
 @app.route("/api/users/", methods = ["POST"])
 def add_user():
