@@ -134,9 +134,9 @@ def get_location_id_by_feature(feature):
         return failure_response("feature not found", 404)
     
     locations = feature.serialize().get("locations")
+    res = {"locations":locations}
+    return [res]
 
-    res = {"id": locations}
-    return success_reponse(res)
 
 
 @app.route("/api/locations/<int:location_id>/")
