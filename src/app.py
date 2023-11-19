@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from db import db, Location, Feature, Post, User
 from flask import Flask
@@ -203,9 +204,24 @@ def add_post():
 
     body = json.loads(request.data)
     comment = body.get("comment")
-    location_id = body.get("location_name")
+    location_id = body.get("location_id")
     user_id = body.get("user_id")
+
+    if comment is None or location_id is None or user_id is None:
+        return failure_response("missing parameter", 400)
+
+    location = Location.query.filter_by(id=location_id).first()
+
+    if location is None:
+        return failure_response("location not found", 404)
+
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return failure_response("user not found", 404)
+
     post = Post(
+        timestamp = datetime.now(),
         comment = comment,
         location_id = location_id,
         user_id = user_id
@@ -234,6 +250,11 @@ def get_posts_by_location(location_id):
 
     if user_id is None:
         return failure_response("missing parameter", 400)
+
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return failure_response("user not found", 404)
     
     posts = [post.checked_serialize(user_id) for post in location.post]
 

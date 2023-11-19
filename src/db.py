@@ -107,6 +107,7 @@ class Post(db.Model):
     """
     __tablename__ = "post"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    timestamp = db.Column(db.TIMESTAMP, nullable = False)
     comment = db.Column(db.String, nullable = False)
     location_id = db.Column(db.Integer, db.ForeignKey("location.id"), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable = False)
@@ -117,6 +118,7 @@ class Post(db.Model):
         Initialize a post object
         """
 
+        self.timestamp = kwargs.get("timestamp")
         self.comment = kwargs.get("comment", "")
         self.location_id = kwargs.get("location_id", "")
         self.user_id = kwargs.get("user_id", "")
@@ -127,6 +129,7 @@ class Post(db.Model):
         """
         return {
             "id": self.id,
+            "timestamp": str(self.timestamp),
             "comment": self.comment,
             "location_id": self.location_id,
             "user_id": self.user_id,
@@ -175,7 +178,7 @@ class User(db.Model):
         """
 
         self.username = kwargs.get("username", "")
-        self.password = kwargs.get("", "")
+        self.password = kwargs.get("password", "")
 
     def serialize(self):
         """
