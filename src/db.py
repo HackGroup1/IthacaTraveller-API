@@ -43,7 +43,7 @@ class Feature(db.Model):
     
     def simple_serialize(self):
         """
-        Serialize a feature object
+        Serialize a feature object without its corresponding locations
         """
         return {
             "id": self.id,
@@ -76,7 +76,7 @@ class Location(db.Model):
 
     def serialize(self):
         """
-        Serialize a course object
+        Serialize a location object
         """
         return {
             "id": self.id,
@@ -90,14 +90,15 @@ class Location(db.Model):
 
     def simple_serialize(self):
         """
-        Serialize a course object without its assignments, instructors, and students fields
+        Serialize a location object without its posts
         """
         return {
             "id": self.id,
             "longitude": self.longitude,
             "latitude": self.latitude,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "features": [feature.simple_serialize() for feature in self.features]
         }
     
 class Post(db.Model):
@@ -174,13 +175,13 @@ class User(db.Model):
             "post_liked": [post.serialize() for post in self.posts_liked]
         }
     
+    
     def simple_serialize(self):
         """
-        Serialize a course object without courses field
+        Serialize a user object without posts field
         """
         return {
             "id": self.id,
-            "name": self.name,
-            "netid": self.netid
+            "username": self.name
         }
     
