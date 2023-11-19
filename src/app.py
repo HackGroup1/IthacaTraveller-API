@@ -1,13 +1,17 @@
 import json
+import os
 from datetime import datetime
 
 from db import db, Location, Feature, Post, User
 from flask import Flask
 from flask import request
+from hashlib import pbkdf2_hmac
 
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
+salting = os.environ.get("SALTING")
+iterations = int(os.environ.get("HASHING_ITERATIONS"))
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -16,6 +20,12 @@ app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 with app.app_context():
     db.create_all()
+
+#### HELPER METHODS ####
+def hash_password(password):
+    secret_password = pbkdf2_hmac('sha384', password.encode(), salting.encode(), iterations)
+    return secret_password
+
 
 #### GENERALIZE RETURN ####
 def success_response(body, code = 200):
