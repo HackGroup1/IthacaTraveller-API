@@ -118,7 +118,11 @@ def get_location_by_id(location_id):
     Endpoint for getting location details by its id
     """
     location = Location.query.filter_by(id=location_id).first()
-    #TODO return serialize
+    
+    if location is None:
+        return failure_response("location not found")
+    
+    return success_reponse(location.serialize())
 
 
 
