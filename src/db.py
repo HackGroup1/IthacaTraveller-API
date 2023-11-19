@@ -84,7 +84,7 @@ class Location(db.Model):
             "latitude": self.latitude,
             "name": self.name,
             "description": self.description,
-            "posts": [post.serialize() for post in self.posts],
+            "posts": [post.simple_serialize() for post in self.posts],
             "features": [feature.simple_serialize() for feature in self.features]
         }
 
@@ -135,13 +135,26 @@ class Post(db.Model):
     
     def simple_serialize(self):
         """
-        Serialize a post object
+        Serialize a post object without liked_users field
         """
         return {
             "id": self.id,
             "comment": self.comment,
             "location_id": self.location_id,
             "user_id": self.user_id
+        }
+    
+    def checked_serialize(self, uid):
+        """
+        Serialize a post object, containing whether it is editable for the user #uid
+        """
+        return {
+            "id": self.id,
+            "comment": self.comment,
+            "location_id": self.location_id,
+            "user_id": self.user_id,
+            "liked_users": [user.simple_serialize() for user in self.liked_users],
+            "is_editable": uid == self.user_id
         }
 
 class User(db.Model):
