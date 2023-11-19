@@ -3,7 +3,7 @@ version: "3"
 services:
   demo:
     image: hoopoed/appdev_hack_challenge:latest
-    volumns:
+    volumes:
       - /home/sd924/IthacaTraveller.db:/usr/app/instance/IthacaTraveller.db
     ports:
       - "80:8000"
