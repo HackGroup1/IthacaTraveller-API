@@ -353,6 +353,35 @@ def verify_user():
         return success_response(res)
 
 
+    users = [user.serialize() for user in User.query.all()]
+    return success_response({"users": users})
+
+
+@app.route("/api/users/", methods = ["POST"])
+def add_user():
+    """
+    Endpoint for adding users
+    """
+    
+    body = json.loads(request.data)
+    username = body.get("username")
+    password = body.get("password")
+
+    if username or password is None:
+        return failure_response("missing parameter", 400)
+
+    hash_password = hash_password(password)
+
+    user = User(username = username,
+                password = hash_password
+                )
+    
+    db.session.add(user)
+    db.session.commit()
+
+    return success_response(user.serialize())
+    
+@app.route("/api/users/")
 
 
 if __name__ == "__main__":
