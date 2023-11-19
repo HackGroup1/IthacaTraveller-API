@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from db import db
 from flask import Flask
@@ -207,7 +208,12 @@ def add_post():
     comment = body.get("comment")
     location_id = body.get("location_name")
     user_id = body.get("user_id")
+
+    if comment is None or location_id is None or user_id is None:
+        return failure_response("missing parameter", 400)
+
     post = Post(
+        timestamp = datetime.now()
         comment = comment,
         location_id = location_id,
         user_id = user_id
