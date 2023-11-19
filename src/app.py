@@ -3,8 +3,7 @@ import os
 from datetime import datetime
 
 from db import db, Location, Feature, Post, User
-from flask import Flask
-from flask import request
+from flask import Flask, request, send_file
 from hashlib import pbkdf2_hmac
 
 
