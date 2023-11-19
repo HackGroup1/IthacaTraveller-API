@@ -70,16 +70,12 @@ def add_feature():
 
     return success_response(feature.serialize(), 201)
 
-@app.route("/api/locations/<int:location_id>/features/", methods = ["POST"])
-def add_feature_to_location(location_id):
+@app.route("/api/locations/<int:location_id>/features/<int:feature_id>/", methods = ["POST"])
+def add_feature_to_location(location_id, feature_id):
     """
     Endpoint adding feature tag to the location
     Requires feature id
     """
-    body = json.loads(request.data)
-    feature_id = body.get("feature_id")
-    if feature_id is None:
-        return failure_response("missing parameter", 400)
 
     feature = Feature.query.filter_by(id=feature_id).first()
     if feature is None:
@@ -134,7 +130,7 @@ def get_location_id_by_feature(feature):
         return failure_response("feature not found", 404)
     
     locations = feature.serialize().get("locations")
-    res = {"locations":locations}
+    res = {"id":locations}
     return success_response([res])
 
 
