@@ -57,8 +57,8 @@ class Location(db.Model):
     """
     __tablename__ = "location"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    longitude = db.Column(db.Double, nullable = False)
-    latitude = db.Column(db.Double, nullable = False)
+    longitude = db.Column(db.String, nullable = False)
+    latitude = db.Column(db.String, nullable = False)
     name = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
     posts = db.relationship("Post", cascade = "delete")
@@ -69,8 +69,8 @@ class Location(db.Model):
         Initialize a location object
         """
 
-        self.longitude = kwargs.get("longitude", 0.0)
-        self.latitude = kwargs.get("latitude", 0.0)
+        self.longitude = kwargs.get("longitude", "0.0")
+        self.latitude = kwargs.get("latitude", "0.0")
         self.name = kwargs.get("name", "")
         self.description = kwargs.get("description", "")
 
@@ -109,7 +109,7 @@ class Post(db.Model):
     comment = db.Column(db.String, nullable = False)
     location_id = db.Column(db.Integer, db.ForeignKey("location.id"), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable = False)
-    likes = db.relationship("User", secondary = assoc_posts_users_likes, back_populates = "users")
+    likes = db.relationship("User", secondary = assoc_posts_users_likes, back_populates = "posts_liked")
 
     def __init__(self, **kwargs):
         """
