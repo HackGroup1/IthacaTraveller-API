@@ -398,8 +398,6 @@ def add_user():
     db.session.commit()
 
     return success_response(user.serialize())
-    
-@app.route("/api/users/")
 
 
 if __name__ == "__main__":
