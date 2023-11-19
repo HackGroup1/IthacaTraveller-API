@@ -311,7 +311,7 @@ def add_user():
     if username is None or password is None:
         return failure_response("missing parameter", 400)
 
-    hash_password = hash_password(password)
+    hashed_password = hash_password(password)
 
     user = User.query.filter_by(username = username).first()
 
@@ -319,7 +319,7 @@ def add_user():
         return failure_response("user already exist", 400)
 
     user = User(username = username,
-                password = hash_password
+                password = hashed_password
                 )
     
     db.session.add(user)
@@ -371,12 +371,12 @@ def verify_user():
     if user is None:
         return failure_response("user not found", 404)
     
-    hash_password = hash_password(password)
+    hashed_password = hash_password(password)
     
     #check with frontend for return message format
     
 
-    if user.password == hash_password:
+    if user.password == hashed_password:
         res = {"verify":True}
         return success_response(res)
     else:
