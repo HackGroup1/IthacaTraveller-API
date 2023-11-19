@@ -19,7 +19,7 @@ with app.app_context():
     db.create_all()
 
 #generalize return
-def success_reponse(body, code = 200):
+def success_response(body, code = 200):
     return json.dumps(body), code
 
 def failure_response(message, code = 404):
@@ -53,7 +53,7 @@ def add_location():
     db.session.add(location)
     db.session.commit()
     
-    return success_reponse(location.serialize(), 201)
+    return success_response(location.serialize(), 201)
 
     
 @app.route("/api/features/", methods=["POST"])
@@ -68,7 +68,7 @@ def add_feature():
     db.session.add(feature)
     db.session.commit()
 
-    return success_reponse(feature.serialize(), 201)
+    return success_response(feature.serialize(), 201)
 
 @app.route("/api/locations/<int:location_id>/features/", methods = ["POST"])
 def add_feature_to_location(location_id):
@@ -98,7 +98,7 @@ def add_feature_to_location(location_id):
 
     location = Location.query.filter_by(id=location_id).first()
 
-    return success_reponse(location.serialize(), 401)
+    return success_response(location.serialize(), 401)
 
 @app.route("/api/features/")
 def get_all_features():
@@ -106,7 +106,7 @@ def get_all_features():
     Endpoint for getting all the features
     """
     features = [feature.serialize() for feature in Feature.query.all()]
-    return success_reponse({"features": features})
+    return success_response({"features": features})
 
 @app.route("/api/locations/")
 def get_all_locations():
@@ -114,7 +114,7 @@ def get_all_locations():
     Endpoint for getting all the locations
     """
     locations = [location.serialize() for location in Location.query.all()]
-    return success_reponse({"locations": locations})
+    return success_response({"locations": locations})
 
 @app.route("/api/posts/")
 def get_all_posts():
@@ -122,7 +122,7 @@ def get_all_posts():
     Endpoint for getting all posts
     """
     posts = [post.serialize() for post in Post.query.all()]
-    return success_reponse({"posts": posts})
+    return success_response({"posts": posts})
 
 @app.route("/api/features/<feature>/locations/")
 def get_location_id_by_feature(feature):
@@ -135,7 +135,7 @@ def get_location_id_by_feature(feature):
     
     locations = feature.serialize().get("locations")
     res = {"locations":locations}
-    return [res]
+    return success_response([res])
 
 
 
@@ -149,7 +149,7 @@ def get_location_by_id(location_id):
     if location is None:
         return failure_response("location not found")
     
-    return success_reponse(location.serialize())
+    return success_response(location.serialize())
 
 
 
@@ -173,7 +173,7 @@ def get_posts(location_id):
     
     posts = [post.checked_serialize(user_id) for post in location.post]
 
-    return success_reponse(posts)
+    return success_response(posts)
 
     
 
