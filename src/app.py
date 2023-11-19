@@ -32,7 +32,7 @@ def front_page():
 
 
 #routes here
-@app.route("/api/locations/add/", methods=["POST"])
+@app.route("/api/locations/", methods=["POST"])
 def add_location():
     """
     Enpoint for adding location
@@ -55,7 +55,7 @@ def add_location():
     return success_reponse(location.serialize(), 201)
 
     
-@app.route("/api/features/add/", methods=["POST"])
+@app.route("/api/features/", methods=["POST"])
 def add_feature():
     """
     Enpoint for adding locations
@@ -69,7 +69,7 @@ def add_feature():
 
     return success_reponse(feature.serialize(), 201)
 
-@app.route("/api/locations/<int:location_id>/addFeature/", methods = ["POST"])
+@app.route("/api/locations/<int:location_id>/features/", methods = ["POST"])
 def add_feature_to_location(location_id):
     """
     Endpoint adding feature tag to the location
@@ -78,7 +78,7 @@ def add_feature_to_location(location_id):
     body = json.loads(request.data)
     feature_id = body.get("feature_id")
     if feature_id is None:
-        return failure_response("provide feature id", 400)
+        return failure_response("missing parameter", 400)
 
     feature = Feature.query.filter_by(id=feature_id).first()
     if feature is None:
@@ -97,7 +97,7 @@ def add_feature_to_location(location_id):
     return success_reponse(location.serialize(), 401)
 
 
-@app.route("/api/locations/<feature>/")
+@app.route("/api/features/<feature>/locations/")
 def get_location_id_by_feature(feature):
     """
     Endpoint for getting location assoicated with feature by feature name
@@ -124,15 +124,25 @@ def get_location_by_id(location_id):
 
 
 
-@app.route("/api/posts/<int:location_id>/")
-def get_post(location_id):
+@app.route("/api/locations/<int:location_id>/")
+def get_posts(location_id):
     """
     Endpoint for getting posts under specific location by id
     Requires user id
     """
+
+    location = Location.query.filter_by(id=location_id).first()
+
+    if location is None:
+        return failure_response("location not found", 404)
+
     body = json.loads(request.data)
     user_id = body.get("user_id")
-    #TODO get post
+
+    if user_id is None:
+        return failure_response("missing parameter", 400)
+    
+
 
 
 
