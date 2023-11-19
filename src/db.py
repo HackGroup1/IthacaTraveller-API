@@ -118,7 +118,7 @@ class Post(db.Model):
         """
 
         self.comment = kwargs.get("comment", "")
-        self.location_id = kwargs.get("name", "")
+        self.location_id = kwargs.get("location_id", "")
         self.user_id = kwargs.get("user_id", "")
 
     def serialize(self):
