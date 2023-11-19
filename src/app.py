@@ -134,7 +134,8 @@ def get_location_id_by_feature(feature):
         return failure_response("feature not found", 404)
     
     locations = feature.serialize().get("locations")
-    res = {"locations":locations}
+
+    res = {"id": locations}
     return success_reponse(res)
 
 
