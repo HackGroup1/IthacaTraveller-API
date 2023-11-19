@@ -11,7 +11,7 @@ from hashlib import pbkdf2_hmac
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
 salting = os.environ.get("SALTING")
-iterations = int(os.environ.get("HASHING_ITERATIONS"))
+iterations = os.environ.get("HASHING_ITERATIONS")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
