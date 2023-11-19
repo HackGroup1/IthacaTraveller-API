@@ -71,7 +71,7 @@ def add_feature():
 
     return success_reponse(feature.serialize(), 201)
 
-@app.route("/api/location/<int:location_id>/", methods = ["POST"])
+@app.route("/api/locations/<int:location_id>/addFeature/", methods = ["POST"])
 def add_feature_to_location(location_id):
     """
     Endpoint adding feature tag to the location
@@ -99,7 +99,7 @@ def add_feature_to_location(location_id):
     return success_reponse(location.serialize(), 401)
 
 
-@app.route("/api/locations/<feature>")
+@app.route("/api/locations/<feature>/")
 def get_location_id_by_feature(feature):
     """
     Endpoint for getting location assoicated with feature by feature name
