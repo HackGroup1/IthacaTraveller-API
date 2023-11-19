@@ -88,6 +88,9 @@ def add_feature_to_location(location_id):
     if location is None:
         return failure_response("location not found")
 
+    if feature in location.features:
+        return failure_response("location already has this feature", 400)
+
     location.features.append(feature)
 
     db.session.commit()
@@ -141,6 +144,11 @@ def get_posts(location_id):
 
     if user_id is None:
         return failure_response("missing parameter", 400)
+    
+    posts = [f.checked_serialized(user_id) for f in location.features]
+
+    return success_reponse(posts)
+
     
 
 
