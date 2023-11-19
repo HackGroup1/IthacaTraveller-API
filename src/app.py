@@ -5,6 +5,7 @@ from flask import Flask
 from flask import request
 from db import Location
 from db import Feature
+from db import Post
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
@@ -99,6 +100,29 @@ def add_feature_to_location(location_id):
 
     return success_reponse(location.serialize(), 401)
 
+@app.route("/api/features/")
+def get_all_features():
+    """
+    Endpoint for getting all the features
+    """
+    features = [feature.serialize() for feature in Feature.query.all()]
+    return success_reponse({"features": features})
+
+@app.route("/api/locations/")
+def get_all_locations():
+    """
+    Endpoint for getting all the locations
+    """
+    locations = [location.serialize() for location in Location.query.all()]
+    return success_reponse({"locations": locations})
+
+@app.route("/api/posts/")
+def get_all_posts():
+    """
+    Endpoint for getting all posts
+    """
+    posts = [post.serialize() for post in Post.query.all()]
+    return success_reponse({"posts": posts})
 
 @app.route("/api/features/<feature>/locations/")
 def get_location_id_by_feature(feature):
@@ -146,7 +170,7 @@ def get_posts(location_id):
     if user_id is None:
         return failure_response("missing parameter", 400)
     
-    posts = [f.checked_serialized(user_id) for f in location.features]
+    posts = [post.checked_serialize(user_id) for post in location.post]
 
     return success_reponse(posts)
 
