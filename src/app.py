@@ -71,6 +71,34 @@ def add_feature():
 
     return success_reponse(feature.serialize(), 201)
 
+@app.route("/api/location/<int:location_id>/", methods = ["POST"])
+def add_feature_to_location(location_id):
+    """
+    Endpoint adding feature tag to the location
+    Requires feature id
+    """
+    body = json.loads(request.data)
+    feature_id = body.get("feature_id")
+    if feature_id is None:
+        return failure_response("provide feature id", 400)
+
+    feature = Feature.query.filter_by(id=feature_id).first()
+    if feature is None:
+        return failure_response("feature not found")
+    
+    location = Location.query.filter_by(id=location_id).first()
+    if location is None:
+        return failure_response("location not found")
+
+    location.features.append(feature)
+
+    db.session.commit()
+
+    location = Location.query.filter_by(id=location_id).first()
+
+    return success_reponse(location.serialize(), 401)
+
+
 @app.route("/api/locations/<feature>")
 def get_location_id_by_feature(feature):
     """
