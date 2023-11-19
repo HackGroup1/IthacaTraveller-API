@@ -1,12 +1,10 @@
 import json
 
-import db
+from db import db
 from flask import Flask
 from flask import request
 from db import Location
 from db import Feature
-
-DB = db.DatabaseDriver()
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
@@ -49,7 +47,7 @@ def add_location():
         latitude = lati,
         name = name,
         description = description
-                        )
+    )
     
     db.session.add(location)
     db.session.commit()
