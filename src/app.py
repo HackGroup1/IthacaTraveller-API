@@ -1,11 +1,9 @@
 import json
 
-from db import db
+from db import db, Location, Feature, Post, User
 from flask import Flask
 from flask import request
-from db import Location
-from db import Feature
-from db import Post
+
 
 app = Flask(__name__)
 db_filename = "IthacaTraveller.db"
