@@ -213,7 +213,7 @@ def add_post():
         return failure_response("missing parameter", 400)
 
     post = Post(
-        timestamp = datetime.now()
+        timestamp = datetime.now(),
         comment = comment,
         location_id = location_id,
         user_id = user_id
