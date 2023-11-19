@@ -298,7 +298,7 @@ def add_user():
     username = body.get("username")
     password = body.get("password")
 
-    if username or password is None:
+    if username is None or password is None:
         return failure_response("missing parameter", 400)
 
     hash_password = hash_password(password)
@@ -353,7 +353,7 @@ def verify_user():
     username = body.get("username")
     password = body.get("password")
 
-    if username or password is None:
+    if username is None or password is None:
         return failure_response("missing parameter", 400)
 
     user = User.query.filter_by(username = username).first()
