@@ -206,7 +206,7 @@ def add_post():
 
     body = json.loads(request.data)
     comment = body.get("comment")
-    location_id = body.get("location_name")
+    location_id = body.get("location_id")
     user_id = body.get("user_id")
 
     if comment is None or location_id is None or user_id is None:
