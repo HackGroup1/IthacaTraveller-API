@@ -16,7 +16,6 @@ db_filename = "IthacaTraveller.db"
 load_dotenv()
 salting = os.environ.get("PASSWORD_SALT")
 iterations = int(os.environ.get("NUMBER_OF_ITERATIONS"))
-print(iterations)
 image_route(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
