@@ -16,6 +16,7 @@ db_filename = "IthacaTraveller.db"
 load_dotenv()
 salting = os.environ.get("PASSWORD_SALT")
 iterations = int(os.environ.get("NUMBER_OF_ITERATIONS"))
+print(iterations)
 image_route(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
@@ -299,7 +300,7 @@ def get_all_users():
     Endpoint for getting all users
     """
 
-    users = [user.serialize() for user in User.query.all()]
+    users = [user.simple_serialize() for user in User.query.all()]
     return success_response({"users": users})
 
 
@@ -332,8 +333,8 @@ def add_user():
 
     return success_response(user.serialize())
 
-@app.route("/api/users/<int:user_id>")
-def get_uesr_by_id(user_id):
+@app.route("/api/users/<int:user_id>/")
+def get_user_by_id(user_id):
     """
     Endpoint for getting user by id
     """
