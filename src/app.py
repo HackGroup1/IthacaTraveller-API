@@ -75,6 +75,32 @@ def add_feature():
 
     return success_response(feature.serialize(), 201)
 
+@app.route("/api/features/<int:feature_id>/locations/<int:location_id>/", methods = ["POST"])
+def add_feature_to_location(location_id, feature_id):
+    """
+    Endpoint adding feature tag to the location
+    Requires feature id
+    """
+
+    feature = Feature.query.filter_by(id=feature_id).first()
+    if feature is None:
+        return failure_response("feature not found")
+    
+    location = Location.query.filter_by(id=location_id).first()
+    if location is None:
+        return failure_response("location not found")
+
+    if feature in location.features:
+        return failure_response("location already has this feature", 400)
+
+    location.features.append(feature)
+
+    db.session.commit()
+
+    location = Location.query.filter_by(id=location_id).first()
+
+    return success_response(location.simple_serialize(), 401)
+
 @app.route("/api/features/<int:feature_id>/", methods = ["DELETE"])
 def delete_feature_by_id(feature_id):
     """
@@ -103,6 +129,35 @@ def get_all_locations():
     return success_response({"locations": locations})
 
 
+@app.route("/api/locations/features/<feature>/")
+def get_locations_id_by_feature(feature):
+    """
+    Endpoint for getting locations id assoicated with feature by feature name
+    """
+
+    feature = Feature.query.filter_by(name=feature).first()
+    if feature is None:
+        return failure_response("feature not found", 404)
+    
+    locations = feature.serialize().get("locations")
+    res = {"id":locations}
+    return success_response([res])
+
+
+@app.route("/api/locations/<int:location_id>/")
+def get_location_by_id(location_id):
+    """
+    Endpoint for getting location details by its id
+    """
+
+    location = Location.query.filter_by(id=location_id).first()
+    
+    if location is None:
+        return failure_response("location not found")
+    
+    return success_response(location.serialize())
+
+
 @app.route("/api/locations/", methods=["POST"])
 def add_location():
     """
@@ -125,62 +180,6 @@ def add_location():
     db.session.commit()
     
     return success_response(location.serialize(), 201)
-
-
-@app.route("/api/locations/<int:location_id>/")
-def get_location_by_id(location_id):
-    """
-    Endpoint for getting location details by its id
-    """
-
-    location = Location.query.filter_by(id=location_id).first()
-    
-    if location is None:
-        return failure_response("location not found")
-    
-    return success_response(location.serialize())
-
-
-@app.route("/api/locations/<int:location_id>/features/<int:feature_id>/", methods = ["POST"])
-def add_feature_to_location(location_id, feature_id):
-    """
-    Endpoint adding feature tag to the location
-    Requires feature id
-    """
-
-    feature = Feature.query.filter_by(id=feature_id).first()
-    if feature is None:
-        return failure_response("feature not found")
-    
-    location = Location.query.filter_by(id=location_id).first()
-    if location is None:
-        return failure_response("location not found")
-
-    if feature in location.features:
-        return failure_response("location already has this feature", 400)
-
-    location.features.append(feature)
-
-    db.session.commit()
-
-    location = Location.query.filter_by(id=location_id).first()
-
-    return success_response(location.simple_serialize(), 401)
-
-
-@app.route("/api/features/<feature>/locations/")
-def get_locations_id_by_feature(feature):
-    """
-    Endpoint for getting locations id assoicated with feature by feature name
-    """
-
-    feature = Feature.query.filter_by(name=feature).first()
-    if feature is None:
-        return failure_response("feature not found", 404)
-    
-    locations = feature.serialize().get("locations")
-    res = {"id":locations}
-    return success_response([res])
 
 
 @app.route("/api/locations/<int:location_id>/", methods = ["DELETE"])
@@ -272,7 +271,7 @@ def like_post(post_id):
     return success_response(post.serialize())
 
 
-@app.route("/api/locations/<int:location_id>/posts/")
+@app.route("/api/posts/locations/<int:location_id>/")
 def get_posts_by_location(location_id):
     """
     Endpoint for getting posts under specific location by id
@@ -383,7 +382,7 @@ def delete_user_by_id(user_id):
     return success_response(user.serialize())
 
 
-@app.route("/api/users/verify")
+@app.route("/api/users/verify/")
 def verify_user():
     """
     Endpoint for verifying whether password is correct
