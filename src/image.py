@@ -12,8 +12,8 @@ def failure_response(message, code = 404):
 
 
 def image_route(app):
-    app.config['IMAGE_FOLDER_POST'] = "/usr/app/images/posts"
-    app.config['IMAGE_FOLDER_USER'] = "/usr/app/images/users"
+    app.config['IMAGE_FOLDER_POST'] = os.path.join(os.path.dirname(__file__), 'images', 'posts')
+    app.config['IMAGE_FOLDER_USER'] = os.path.join(os.path.dirname(__file__), 'images', 'users')
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
     def check_existance(folder_key, name):
