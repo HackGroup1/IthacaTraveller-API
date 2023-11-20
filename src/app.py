@@ -244,6 +244,30 @@ def add_post():
     
     return success_response(post.serialize(), 201)
 
+@app.route("/api/posts/<int:post_id>/like/")
+def like_post(post_id):
+    """
+    Endpoint for liking a post
+    """
+    post = Post.query.filter_by(id = post_id).first()
+    if post is None:
+        return failure_response("post not found")
+    
+    body = json.loads(request.data)
+    user_id = body.get("user_id")
+    if user_id is None:
+        return failure_response("parameter not provided",400)
+    
+    user = User.query.filter_by(id = user_id).first()
+
+    if user is None:
+        return failure_response("User not found")
+    
+    post.liked_users.append(user)
+    db.session.commit()
+    post = Post.query.filter_by(id = post_id).first()
+    return success_response(post.serialize())
+
 
 @app.route("/api/locations/<int:location_id>/posts/")
 def get_posts_by_location(location_id):
