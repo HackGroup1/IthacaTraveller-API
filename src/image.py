@@ -9,8 +9,8 @@ def failure_response(message, code = 404):
     return json.dumps({"error": message}), code
 
 def image_route(app):
-    app.config['IMAGE_FOLDER_POST'] = os.path.join(os.path.dirname(__file__), 'images', 'posts')
-    app.config['IMAGE_FOLDER_USER'] = os.path.join(os.path.dirname(__file__), 'images', 'users')
+    app.config['IMAGE_FOLDER_POST'] = "/usr/app/images/posts"
+    app.config['IMAGE_FOLDER_USER'] = "/usr/app/images/users"
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
     def allowed_file(filename):
@@ -32,15 +32,17 @@ def image_route(app):
         folder_path = app.config['IMAGE_FOLDER_POST']
         filename = os.path.join(folder_path, f"{post_id}.{file.filename.rsplit('.', 1)[1].lower()}")
         file.save(filename)
-        return success_response("images successfully saved at " + filename, 201)
+        return success_response("images successfully saved at server", 201)
 
 
     @app.route('/api/images/posts/<int:post_id>/')
     def get_image(post_id):
         # Retrieve the image file path
-        image_path = os.path.join(app.config['IMAGE_FOLDER_POST'], post_id)
         
-        if os.path.exists(image_path):
-            return send_file(image_path, mimetype='image/jpeg')
-        else:
-            return failure_response("file not found")
+        for extension in app.config['ALLOWED_EXTENSIONS']:
+            image_path = os.path.join(app.config['IMAGE_FOLDER_POST'], str(post_id) + "." + extension)
+
+            if os.path.exists(image_path):
+                return send_file(image_path, mimetype='image/jpeg')
+
+        return failure_response("file not found")

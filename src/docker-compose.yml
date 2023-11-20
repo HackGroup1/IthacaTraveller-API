@@ -5,6 +5,8 @@ services:
     image: hoopoed/appdev_hack_challenge:latest
     volumes:
       - /home/sd924/IthacaTraveller.db:/usr/app/instance/IthacaTraveller.db
+      - /home/sd924/images/posts:/usr/app/images/posts
+      - /home/sd924/images/users:/usr/app/images/users
     ports:
       - "80:8000"
     env_file:
