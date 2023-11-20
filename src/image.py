@@ -1,4 +1,5 @@
 from flask import Flask, request, send_file
+from db import Post, User
 import json
 import os
 
@@ -32,6 +33,11 @@ def image_route(app):
 
     @app.route('/api/images/posts/<int:post_id>/', methods=['POST'])
     def upload(post_id):
+        post = Post.query.filter_by(id=post_id).first()
+
+        if post is None:
+            return failure_response("post not found")
+
         if 'file' not in request.files:
             return failure_response("file keyword not provided", 400)
     
@@ -57,9 +63,31 @@ def image_route(app):
 
     @app.route('/api/images/posts/<int:post_id>/')
     def get_image(post_id):
-        # Retrieve the image file path
+       post = Post.query.filter_by(id=post_id).first()
+       
+       if post is None:
+            return failure_response("post not found")
+       
        check = check_existance('IMAGE_FOLDER_POST', post_id)
        if check is not None:
             return send_file(check, mimetype='image/jpeg')
        return failure_response("file not found")
+    
+    @app.route('/api/images/post/<int:post_id>', methods=["DELETE"])
+    def delete_image(post_id):
+        post = Post.query.filter_by(id=post_id).first()
+
+        if post is None:
+            return failure_response("post not found")
         
+        check = check_existance('IMAGE_FOLDER_POST', post_id)
+
+        if check is None: 
+            return failure_response("image not found")
+        
+        while check is not None:
+            os.remove(check)
+            check = check_existance('IMAGE_FOLDER_POST', post_id)
+
+        return success_response("image removed")
+            
