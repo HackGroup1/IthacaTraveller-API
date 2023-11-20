@@ -5,13 +5,13 @@ WORKDIR usr/app
 
 RUN mkdir images
 
-WORKDIR usr/app/images
+WORKDIR images
 
 RUN mkdir posts
 
 RUN mkdir users
 
-WORKDIR usr/app
+WORKDIR ..
 
 COPY . .
 

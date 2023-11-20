@@ -9,8 +9,8 @@ def failure_response(message, code = 404):
     return json.dumps({"error": message}), code
 
 def image_route(app):
-    app.config['IMAGE_FOLDER_POST'] = "/usr/app/images/posts"
-    app.config['IMAGE_FOLDER_USER'] = "/usr/app/images/users"
+    app.config['IMAGE_FOLDER_POST'] = os.path.join(os.path.dirname(__file__), 'images', 'posts')
+    app.config['IMAGE_FOLDER_USER'] = os.path.join(os.path.dirname(__file__), 'images', 'users')
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
     def allowed_file(filename):
