@@ -186,7 +186,7 @@ class User(db.Model):
         """
         return {
             "id": self.id,
-            "username": self.name,
+            "username": self.username,
             "posts": [post.serialize() for post in self.posts],
             "post_liked": [post.serialize() for post in self.posts_liked]
         }
@@ -198,6 +198,6 @@ class User(db.Model):
         """
         return {
             "id": self.id,
-            "username": self.name
+            "username": self.username
         }
     
