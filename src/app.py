@@ -60,22 +60,63 @@ def get_all_features():
 
     features = [feature.serialize() for feature in Feature.query.all()]
     return success_response({"features": features})
+
+@app.route("/api/features/<int:feature_id>/")
+def get_feature_by_id(feature_id):
+    """
+    Endpoint for getting feature by id
+    """
+
+    feature = Feature.query.filter_by(id=feature_id).first()
+
+    if feature is None:
+        return failure_response("feature not found")
     
+    return success_response(feature.serialize())
 
 @app.route("/api/features/", methods=["POST"])
 def add_feature():
     """
-    Enpoint for adding locations
+    Enpoint for adding feature
     """
 
     body = json.loads(request.data)
     name = body.get("name")
+
+    if name is None:
+        return failure_response("missing parameter", 400)
+
     feature = Feature(name = name)
 
     db.session.add(feature)
     db.session.commit()
 
     return success_response(feature.serialize(), 201)
+
+@app.route("api/features/<int:feature_id>/", methods = ["POST"])
+def update_feature(feature_id):
+    """
+    Endpoint for updating feature given id
+    """
+
+    feature = Feature.query.filter_by(id = feature_id).first()
+
+    if feature is None:
+        return failure_response("feature not found")
+    
+    body = json.loads(request.data)
+    name = body.get("name")
+
+    if name is None:
+        return failure_response("missing parameter", 400)
+    
+    feature.name = name
+
+    db.session.commit()
+    feature = Feature.query.filter_by(id = feature_id).first()
+    
+    return success_response(feature.serialize())
+    
 
 @app.route("/api/features/<int:feature_id>/locations/<int:location_id>/", methods = ["POST"])
 def add_feature_to_location(location_id, feature_id):
@@ -170,6 +211,11 @@ def add_location():
     long = body.get("longitude")
     lati = body.get("latitude")
     name = body.get("name")
+
+    if long is None or lati is None or name is None:
+        return failure_response("missing parameter", 400)
+
+
     description = body.get("description")
     location = Location(
         longitude = long,
@@ -183,6 +229,30 @@ def add_location():
     
     return success_response(location.serialize(), 201)
 
+@app.route("api/locations/<int:location_id>/", methods = ["POST"])
+def update_location(location_id):
+    """
+    Endpoint for updating location given id
+    """
+
+    location = Location.query.filter_by(id = location_id).first()
+
+    if location is None:
+        return failure_response("location not found")
+    
+    body = json.loads(request.data)
+    long = body.get("longitude", location.longitude)
+    lati = body.get("latitude", location.latitude)
+    name = body.get("name", location.name)
+    
+    location.longitude = long
+    location.latitude = lati
+    location.name = name
+
+    db.session.commit()
+    location = Location.query.filter_by(id = location_id).first()
+    
+    return success_response(location.serialize())
 
 @app.route("/api/locations/<int:location_id>/", methods = ["DELETE"])
 def delete_location_by_id(location_id):
@@ -211,6 +281,18 @@ def get_all_posts():
     posts = [post.serialize() for post in Post.query.all()]
     return success_response({"posts": posts})
 
+@app.route("/api/posts/<int:post_id>/")
+def get_post_by_id(post_id):
+    """
+    Endpoint for getting post by id
+    """
+
+    post = Post.query.filter_by(id=post_id).first()
+
+    if post is None:
+        return failure_response("feature not found")
+    
+    return success_response(post.serialize())
 
 @app.route("/api/posts/", methods=["POST"])
 def add_post():
