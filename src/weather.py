@@ -47,13 +47,13 @@ def get_formatted_weather(long, lati):
     condition = weather.get("condition").get("text").lower()
     condition_code = None
     
-    if condition.split() == [*_, 'sunny']:
+    if "sunny" in condition:
         condition_code = 0
-    elif condition.split() == [*_, 'clear']:
+    elif "clear" in condition:
         condition_code = 0
-    elif condition.split() == [*_, 'cloudy']:
+    elif "cloudy" in condition:
         condition_code = 1
-    elif condition.split() == [*_, 'raining']:
+    elif "raining" in condition:
         condition_code = 2
     else:
         condition_code = -1
@@ -77,10 +77,6 @@ def weather_route(app):
         body = json.loads(request.data)
         long = body.get("longitude")
         lati = body.get("latitude")
-
-        if long is None or lati is None:
-            long = request.args('longitude', default = None, type = int)
-            lati = request.args('latitude', default = None, type = int)
 
         if long is None or lati is None:
             return {"error":"missing parameters"}, 400
