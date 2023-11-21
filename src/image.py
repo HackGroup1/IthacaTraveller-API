@@ -29,11 +29,17 @@ def image_route(app):
         return None
 
     def allowed_file(filename):
+        """
+        Checks if file has allowed extensions
+        """
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
     #------------Post route-----------------------------------------------------
     @app.route('/api/images/posts/<int:post_id>/', methods=['POST'])
     def upload_post_image(post_id):
+        """
+        Takes uploaded image and store in IMAGE_FOLDER_POST
+        """
         post = Post.query.filter_by(id=post_id).first()
 
         if post is None:
@@ -64,6 +70,9 @@ def image_route(app):
 
     @app.route('/api/images/posts/<int:post_id>/')
     def get_post_image(post_id):
+       """
+       Given post id, gets and returns image from IMAGE_FOLDER_POST
+       """
        post = Post.query.filter_by(id=post_id).first()
        
        if post is None:
@@ -76,6 +85,9 @@ def image_route(app):
     
     @app.route('/api/images/post/<int:post_id>/', methods=["DELETE"])
     def delete_post_image(post_id):
+        """
+        With given post_id, remove the image in IMAGE_FOLDER_POST
+        """
         post = Post.query.filter_by(id=post_id).first()
 
         if post is None:
@@ -95,6 +107,9 @@ def image_route(app):
     #------------------------user route---------------------------------------
     @app.route('/api/images/user/<int:user_id>/', methods=['POST'])
     def upload_user_image(user_id):
+        """
+        Takes uploaded image and store in IMAGE_FOLDER_USER
+        """
         user = User.query.filter_by(id=user_id).first()
 
         if user is None:
@@ -125,6 +140,9 @@ def image_route(app):
 
     @app.route('/api/images/users/<int:user_id>/')
     def get_user_image(user_id):
+       """
+       With given post_id, gets and returns the image in IMAGE_FOLDER_USER
+       """
        user = User.query.filter_by(id=user_id).first()
        
        if user is None:
@@ -137,6 +155,9 @@ def image_route(app):
     
     @app.route('/api/images/user/<int:user_id>/', methods=["DELETE"])
     def delete_user_image(user_id):
+        """
+        With given post_id, remove the image in IMAGE_FOLDER_IMAGE
+        """
         user = User.query.filter_by(id=user_id).first()
 
         if user is None:
