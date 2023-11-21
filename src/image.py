@@ -74,7 +74,7 @@ def image_route(app):
             return send_file(check, mimetype='image/jpeg')
        return failure_response("file not found")
     
-    @app.route('/api/images/post/<int:post_id>', methods=["DELETE"])
+    @app.route('/api/images/post/<int:post_id>/', methods=["DELETE"])
     def delete_post_image(post_id):
         post = Post.query.filter_by(id=post_id).first()
 
@@ -135,7 +135,7 @@ def image_route(app):
             return send_file(check, mimetype='image/jpeg')
        return failure_response("file not found")
     
-    @app.route('/api/images/user/<int:user_id>', methods=["DELETE"])
+    @app.route('/api/images/user/<int:user_id>/', methods=["DELETE"])
     def delete_user_image(user_id):
         user = User.query.filter_by(id=user_id).first()
 
