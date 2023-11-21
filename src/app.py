@@ -411,7 +411,7 @@ def get_posts_by_location(location_id):
     else:
         posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:(post.get("timestamp")), reverse = True)
 
-    return success_response(posts)
+    return success_response({"posts": posts})
 
 
 @app.route("/api/posts/<int:post_id>/", methods = ["DELETE"])
