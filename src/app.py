@@ -8,6 +8,7 @@ from hashlib import pbkdf2_hmac
 from dotenv import load_dotenv
 
 from image import image_route
+from weather import weather_route
 
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ load_dotenv()
 salting = os.environ.get("PASSWORD_SALT")
 iterations = int(os.environ.get("NUMBER_OF_ITERATIONS"))
 image_route(app)
+weather_route(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s" % db_filename
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
