@@ -330,7 +330,7 @@ def add_post():
     
     return success_response(post.serialize(), 201)
 
-@app.route("/api/posts/<int:post_id>/like/")
+@app.route("/api/posts/<int:post_id>/like/", methods = ["POST"])
 def like_post(post_id):
     """
     Endpoint for liking a post
@@ -362,6 +362,11 @@ def get_posts_by_location(location_id):
     Requires user id
     """
 
+    sort = request.args.get("sort")
+
+    if sort != "recent" and sort != "likes":
+        return json.dumps({"error": "missing sorting method"}), 400
+
     location = Location.query.filter_by(id=location_id).first()
 
     if location is None:
@@ -378,7 +383,10 @@ def get_posts_by_location(location_id):
     if user is None:
         return failure_response("user not found", 404)
     
-    posts = [post.checked_serialize(user_id) for post in location.post]
+    if sort == "likes":
+        posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:len(post.get("liked_users")), reverse = True)
+    else:
+        posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:(post.get("timestamp")))
 
     return success_response(posts)
 
