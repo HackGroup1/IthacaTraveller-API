@@ -47,17 +47,16 @@ def get_formatted_weather(long, lati):
     condition = weather.get("condition").get("text").lower()
     condition_code = None
     
-    match condition.split():
-        case [*_, 'sunny']:
-            condition_code = 0
-        case [*_, 'clear']:
-            condition_code = 0
-        case [*_, 'cloudy']:
-            condition_code = 1
-        case [*_, 'raining']:
-            condition_code = 2
-        case _:
-            condition_code = -1
+    if condition.split() == [*_, 'sunny']:
+        condition_code = 0
+    elif condition.split() == [*_, 'clear']:
+        condition_code = 0
+    elif condition.split() == [*_, 'cloudy']:
+        condition_code = 1
+    elif condition.split() == [*_, 'raining']:
+        condition_code = 2
+    else:
+        condition_code = -1
         
     sunrise = astro.get('sunrise')
     sunset = astro.get('sunset')
