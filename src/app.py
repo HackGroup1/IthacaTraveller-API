@@ -330,6 +330,29 @@ def add_post():
     
     return success_response(post.serialize(), 201)
 
+@app.route("/api/posts/<int:post_id>/", methods = ["POST"])
+def update_post(post_id):
+    """
+    Endpoint for updating a post
+    """
+    post = Post.query.filter_by(id = post_id).first()
+    if post is None:
+        return failure_response("post not found")
+    
+    body = json.loads(request.data)
+    comment = body.get("comment")
+
+    if comment is None:
+        return failure_response("missing parameter",400)
+
+    post.comment = comment
+    post.timestamp = datetime.now()
+    db.session.commit()
+
+    post = Post.query.filter_by(id = post_id).first()
+    return success_response(post.serialize())
+
+
 @app.route("/api/posts/<int:post_id>/like/", methods = ["POST"])
 def like_post(post_id):
     """
@@ -342,7 +365,7 @@ def like_post(post_id):
     body = json.loads(request.data)
     user_id = body.get("user_id")
     if user_id is None:
-        return failure_response("parameter not provided",400)
+        return failure_response("missing parameter",400)
     
     user = User.query.filter_by(id = user_id).first()
 
@@ -386,7 +409,7 @@ def get_posts_by_location(location_id):
     if sort == "likes":
         posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:len(post.get("liked_users")), reverse = True)
     else:
-        posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:(post.get("timestamp")))
+        posts = sorted([post.checked_serialize(user_id) for post in location.posts], key = lambda post:(post.get("timestamp")), reverse = True)
 
     return success_response(posts)
 
