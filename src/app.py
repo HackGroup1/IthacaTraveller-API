@@ -93,7 +93,7 @@ def add_feature():
 
     return success_response(feature.serialize(), 201)
 
-@app.route("api/features/<int:feature_id>/", methods = ["POST"])
+@app.route("/api/features/<int:feature_id>/", methods = ["POST"])
 def update_feature(feature_id):
     """
     Endpoint for updating feature given id
@@ -229,7 +229,7 @@ def add_location():
     
     return success_response(location.serialize(), 201)
 
-@app.route("api/locations/<int:location_id>/", methods = ["POST"])
+@app.route("/api/locations/<int:location_id>/", methods = ["POST"])
 def update_location(location_id):
     """
     Endpoint for updating location given id
