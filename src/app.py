@@ -372,7 +372,11 @@ def like_post(post_id):
     if user is None:
         return failure_response("User not found")
     
-    post.liked_users.append(user)
+    if user not in post.liked_users:
+        post.liked_users.append(user)
+    else:
+        post.liked_users.remove(user)
+        
     db.session.commit()
     post = Post.query.filter_by(id = post_id).first()
     return success_response(post.serialize())
