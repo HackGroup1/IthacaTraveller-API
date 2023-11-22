@@ -83,7 +83,7 @@ def image_route(app):
             return send_file(check, mimetype='image/jpeg')
        return failure_response("file not found")
     
-    @app.route('/api/images/post/<int:post_id>/', methods=["DELETE"])
+    @app.route('/api/images/posts/<int:post_id>/', methods=["DELETE"])
     def delete_post_image(post_id):
         """
         With given post_id, remove the image in IMAGE_FOLDER_POST
@@ -105,7 +105,7 @@ def image_route(app):
         return success_response("image removed")
     
     #------------------------user route---------------------------------------
-    @app.route('/api/images/user/<int:user_id>/', methods=['POST'])
+    @app.route('/api/images/users/<int:user_id>/', methods=['POST'])
     def upload_user_image(user_id):
         """
         Takes uploaded image and store in IMAGE_FOLDER_USER
@@ -153,7 +153,7 @@ def image_route(app):
             return send_file(check, mimetype='image/jpeg')
        return failure_response("file not found")
     
-    @app.route('/api/images/user/<int:user_id>/', methods=["DELETE"])
+    @app.route('/api/images/users/<int:user_id>/', methods=["DELETE"])
     def delete_user_image(user_id):
         """
         With given post_id, remove the image in IMAGE_FOLDER_IMAGE
