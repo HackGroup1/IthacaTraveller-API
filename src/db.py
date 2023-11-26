@@ -60,6 +60,7 @@ class Location(db.Model):
     longitude = db.Column(db.String, nullable = False)
     latitude = db.Column(db.String, nullable = False)
     name = db.Column(db.String, nullable = False)
+    address = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
     posts = db.relationship("Post", cascade = "delete")
     features = db.relationship("Feature", secondary = assoc_features_locations, back_populates = "locations")
@@ -72,6 +73,7 @@ class Location(db.Model):
         self.longitude = kwargs.get("longitude", "0.0")
         self.latitude = kwargs.get("latitude", "0.0")
         self.name = kwargs.get("name", "")
+        self.address = kwargs.get("address", "")
         self.description = kwargs.get("description", "")
 
     def serialize(self):
@@ -83,6 +85,7 @@ class Location(db.Model):
             "longitude": self.longitude,
             "latitude": self.latitude,
             "name": self.name,
+            "address": self.address,
             "description": self.description,
             "posts": [post.simple_serialize() for post in self.posts],
             "features": [feature.simple_serialize() for feature in self.features]
@@ -97,6 +100,7 @@ class Location(db.Model):
             "longitude": self.longitude,
             "latitude": self.latitude,
             "name": self.name,
+            "address": self.address,
             "description": self.description,
             "features": [feature.simple_serialize() for feature in self.features]
         }
