@@ -472,7 +472,7 @@ def add_user():
     db.session.add(user)
     db.session.commit()
 
-    return success_response(user.serialize())
+    return success_response(user.serialize(), 201)
 
 @app.route("/api/users/<int:user_id>/")
 def get_user_by_id(user_id):
