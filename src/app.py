@@ -501,7 +501,7 @@ def delete_user_by_id(user_id):
     return success_response(user.serialize())
 
 
-@app.route("/api/users/verify/")
+@app.route("/api/users/verify/", methods = ["POST"])
 def verify_user():
     """
     Endpoint for verifying whether password is correct
@@ -524,7 +524,10 @@ def verify_user():
     
 
     if user.password == hashed_password:
-        res = {"verify":True}
+        res = {
+            "verify":True,
+            "user_id": user.serialize().get("id")
+            }
         return success_response(res)
     else:
         res = {"verify":False}
