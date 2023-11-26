@@ -211,8 +211,9 @@ def add_location():
     long = body.get("longitude")
     lati = body.get("latitude")
     name = body.get("name")
+    address = body.get("address")
 
-    if long is None or lati is None or name is None:
+    if long is None or lati is None or name is None or address is None:
         return failure_response("missing parameter", 400)
 
 
@@ -221,6 +222,7 @@ def add_location():
         longitude = long,
         latitude = lati,
         name = name,
+        address = address,
         description = description
     )
     
@@ -244,10 +246,12 @@ def update_location(location_id):
     long = body.get("longitude", location.longitude)
     lati = body.get("latitude", location.latitude)
     name = body.get("name", location.name)
+    address = body.get("name", location.name)
     
     location.longitude = long
     location.latitude = lati
     location.name = name
+    location.address = address
 
     db.session.commit()
     location = Location.query.filter_by(id = location_id).first()
