@@ -45,25 +45,13 @@ def get_formatted_weather(long, lati):
 
     temperature = str(weather.get("temp_f"))
     condition = weather.get("condition").get("text").lower()
-    condition_code = None
-    
-    if "sunny" in condition:
-        condition_code = 0
-    elif "clear" in condition:
-        condition_code = 0
-    elif "cloudy" in condition:
-        condition_code = 1
-    elif "raining" in condition:
-        condition_code = 2
-    else:
-        condition_code = -1
         
     sunrise = astro.get('sunrise')
     sunset = astro.get('sunset')
 
     formatted_weather["sunrise"] = sunrise
     formatted_weather["sunset"] = sunset
-    formatted_weather["weather"] = condition_code
+    formatted_weather["weather"] = condition
     formatted_weather["temperature"] = temperature
 
     return json.dumps(formatted_weather)
