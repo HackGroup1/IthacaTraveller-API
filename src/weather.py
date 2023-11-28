@@ -62,13 +62,9 @@ def weather_route(app):
         """
         Endpoint for returning formatted weather
         """
-        body = json.loads(request.data)
-        long = body.get("longitude")
-        lati = body.get("latitude")
-
-        if long is None or lati is None:
-            long = request.args.get('longitude', default = None, type = int)
-            lati = request.args.get('latitude', default = None, type = int)
+        
+        long = request.args.get('longitude', default = None, type = int)
+        lati = request.args.get('latitude', default = None, type = int)
 
         if long is None or lati is None:
             return {"error":"missing parameters"}, 400
