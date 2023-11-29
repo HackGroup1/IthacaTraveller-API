@@ -91,7 +91,7 @@ def add_feature():
     db.session.add(feature)
     db.session.commit()
 
-    return success_response(feature.serialize(), 201)
+    return success_response({}, 201)
 
 @app.route("/api/features/<int:feature_id>/", methods = ["POST"])
 def update_feature(feature_id):
@@ -115,7 +115,7 @@ def update_feature(feature_id):
     db.session.commit()
     feature = Feature.query.filter_by(id = feature_id).first()
     
-    return success_response(feature.serialize())
+    return success_response({})
     
 
 @app.route("/api/features/<int:feature_id>/locations/<int:location_id>/", methods = ["POST"])
@@ -142,7 +142,7 @@ def add_feature_to_location(location_id, feature_id):
 
     location = Location.query.filter_by(id=location_id).first()
 
-    return success_response(location.simple_serialize(), 401)
+    return success_response({}, 401)
 
 @app.route("/api/features/<int:feature_id>/", methods = ["DELETE"])
 def delete_feature_by_id(feature_id):
@@ -157,7 +157,7 @@ def delete_feature_by_id(feature_id):
 
     db.session.delete(feature)
     db.session.commit()
-    return success_response(feature.serialize())
+    return success_response({})
 
 
 #--------- Location Routes ------------
@@ -229,7 +229,7 @@ def add_location():
     db.session.add(location)
     db.session.commit()
     
-    return success_response(location.simple_serialize(), 201)
+    return success_response({}, 201)
 
 @app.route("/api/locations/<int:location_id>/", methods = ["POST"])
 def update_location(location_id):
@@ -256,7 +256,7 @@ def update_location(location_id):
     db.session.commit()
     location = Location.query.filter_by(id = location_id).first()
     
-    return success_response(location.simple_serialize())
+    return success_response({})
 
 @app.route("/api/locations/<int:location_id>/", methods = ["DELETE"])
 def delete_location_by_id(location_id):
@@ -271,7 +271,7 @@ def delete_location_by_id(location_id):
 
     db.session.delete(location)
     db.session.commit()
-    return success_response(location.simple_serialize())
+    return success_response({})
 
 
 #--------- Posts Routes ------------
@@ -354,7 +354,7 @@ def update_post(post_id):
     db.session.commit()
 
     post = Post.query.filter_by(id = post_id).first()
-    return success_response(post.serialize())
+    return success_response({})
 
 
 @app.route("/api/posts/<int:post_id>/like/", methods = ["POST"])
@@ -383,7 +383,7 @@ def like_post(post_id):
         
     db.session.commit()
     post = Post.query.filter_by(id = post_id).first()
-    return success_response(post.serialize())
+    return success_response({})
 
 
 @app.route("/api/posts/locations/<int:location_id>/")
@@ -433,7 +433,7 @@ def delete_post_by_id(post_id):
 
     db.session.delete(post)
     db.session.commit()
-    return success_response(post.serialize())
+    return success_response({})
 
 
 #--------- Users Routes ------------
@@ -474,7 +474,7 @@ def add_user():
     db.session.add(user)
     db.session.commit()
 
-    return success_response(user.serialize(), 201)
+    return success_response({}, 201)
 
 @app.route("/api/users/<int:user_id>/")
 def get_user_by_id(user_id):
@@ -500,7 +500,7 @@ def delete_user_by_id(user_id):
 
     db.session.delete(user)
     db.session.commit()
-    return success_response(user.serialize())
+    return success_response({})
 
 
 @app.route("/api/users/verify/", methods = ["POST"])
@@ -526,14 +526,14 @@ def verify_user():
     
 
     if user.password == hashed_password:
-        res = {
-            "verify":True,
-            "user_id": user.serialize().get("id")
-            }
-        return success_response(res)
+        # res = {
+        #     "verify":True,
+        #     "user_id": user.serialize().get("id")
+        #     }
+        return success_response({})
     else:
-        res = {"verify":False}
-        return success_response(res)
+        # res = {"verify":False}
+        return success_response({}, 405)
 
 
 if __name__ == "__main__":
