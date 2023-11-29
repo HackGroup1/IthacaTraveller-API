@@ -45,15 +45,15 @@ def image_route(app):
         if post is None:
             return failure_response("post not found")
 
-        if 'file' not in request.files:
-            return failure_response("file keyword not provided", 400)
+        if 'image' not in request.files:
+            return failure_response("image keyword not provided", 400)
     
-        file = request.files['file']
+        image = request.files['image']
 
-        if file is None:
-            return failure_response("file not uploaded", 400)
+        if image is None:
+            return failure_response("image not uploaded", 400)
         
-        if not allowed_file(file.filename):
+        if not allowed_file(image.filename):
             return failure_response("file not supported", 400)
         
         check = check_existance('IMAGE_FOLDER_POST', post_id)
@@ -63,8 +63,8 @@ def image_route(app):
             check = check_existance('IMAGE_FOLDER_POST', post_id)
 
         folder_path = app.config['IMAGE_FOLDER_POST']
-        filename = os.path.join(folder_path, f"{post_id}.{file.filename.rsplit('.', 1)[1].lower()}")
-        file.save(filename)
+        filename = os.path.join(folder_path, f"{post_id}.{image.filename.rsplit('.', 1)[1].lower()}")
+        image.save(filename)
         return success_response("images successfully saved at server", 201)
 
 
@@ -115,15 +115,15 @@ def image_route(app):
         if user is None:
             return failure_response("user not found")
 
-        if 'file' not in request.files:
-            return failure_response("file keyword not provided", 400)
+        if 'image' not in request.files:
+            return failure_response("image keyword not provided", 400)
     
-        file = request.files['file']
+        image = request.files['image']
 
-        if file is None:
-            return failure_response("file not uploaded", 400)
+        if image is None:
+            return failure_response("image not uploaded", 400)
         
-        if not allowed_file(file.filename):
+        if not allowed_file(image.filename):
             return failure_response("file not supported", 400)
         
         check = check_existance('IMAGE_FOLDER_USER', user_id)
@@ -133,8 +133,8 @@ def image_route(app):
             check = check_existance('IMAGE_FOLDER_USER', user_id)
 
         folder_path = app.config['IMAGE_FOLDER_USER']
-        filename = os.path.join(folder_path, f"{user_id}.{file.filename.rsplit('.', 1)[1].lower()}")
-        file.save(filename)
+        filename = os.path.join(folder_path, f"{user_id}.{image.filename.rsplit('.', 1)[1].lower()}")
+        image.save(filename)
         return success_response("images successfully saved at server", 201)
 
 
