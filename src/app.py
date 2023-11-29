@@ -198,7 +198,7 @@ def get_location_by_id(location_id):
     if location is None:
         return failure_response("location not found")
     
-    return success_response(location.serialize())
+    return success_response(location.simple_serialize())
 
 
 @app.route("/api/locations/", methods=["POST"])
@@ -229,7 +229,7 @@ def add_location():
     db.session.add(location)
     db.session.commit()
     
-    return success_response(location.serialize(), 201)
+    return success_response(location.simple_serialize(), 201)
 
 @app.route("/api/locations/<int:location_id>/", methods = ["POST"])
 def update_location(location_id):
@@ -256,7 +256,7 @@ def update_location(location_id):
     db.session.commit()
     location = Location.query.filter_by(id = location_id).first()
     
-    return success_response(location.serialize())
+    return success_response(location.simple_serialize())
 
 @app.route("/api/locations/<int:location_id>/", methods = ["DELETE"])
 def delete_location_by_id(location_id):
@@ -271,7 +271,7 @@ def delete_location_by_id(location_id):
 
     db.session.delete(location)
     db.session.commit()
-    return success_response(location.serialize())
+    return success_response(location.simple_serialize())
 
 
 #--------- Posts Routes ------------
@@ -332,7 +332,7 @@ def add_post():
     db.session.add(post)
     db.session.commit()
     
-    return success_response(post.serialize(), 201)
+    return success_response({}, 201)
 
 @app.route("/api/posts/<int:post_id>/", methods = ["POST"])
 def update_post(post_id):

@@ -147,6 +147,7 @@ class Post(db.Model):
         return {
             "id": self.id,
             "comment": self.comment,
+            "timestamp": str(self.timestamp),
             "location_id": self.location_id,
             "user_id": self.user_id
         }
