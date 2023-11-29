@@ -526,14 +526,13 @@ def verify_user():
     
 
     if user.password == hashed_password:
-         res = {
-             "verify":True,
-             "user_id": user.serialize().get("id")
-             }
+        res = {
+            "verify":True
+            }
         return success_response(res)
     else:
-         res = {"verify":False}
-        return success_response(res, 405)
+        res = {"verify":False}
+        return success_response(res, 403)
 
 
 if __name__ == "__main__":
