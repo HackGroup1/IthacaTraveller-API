@@ -86,6 +86,11 @@ def add_feature():
     if name is None:
         return failure_response("missing parameter", 400)
 
+    feature = Feature.query.filter_by(name = name).first()
+
+    if feature is not None:
+        return failure_response("feature already exists", 400)
+
     feature = Feature(name = name)
 
     db.session.add(feature)
