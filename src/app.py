@@ -332,7 +332,7 @@ def add_post():
     db.session.add(post)
     db.session.commit()
     
-    return success_response({}, 201)
+    return success_response({"post_id":post.id}, 201)
 
 @app.route("/api/posts/<int:post_id>/", methods = ["POST"])
 def update_post(post_id):
