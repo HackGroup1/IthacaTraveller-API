@@ -394,13 +394,15 @@ def get_posts_by_location(location_id):
     """
 
     sort = request.args.get("sort")
-    user_id = int(request.args.get("user_id"))
+    user_id = request.args.get("user_id")
 
     if sort != "recent" and sort != "likes":
         return json.dumps({"error": "missing sorting method"}), 400
 
     if user_id is None:
         return failure_response("missing user_id", 400)
+
+    user_id = int(request.args.get("user_id"))
 
     location = Location.query.filter_by(id=location_id).first()
 
