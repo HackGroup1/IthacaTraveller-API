@@ -137,6 +137,7 @@ class Post(db.Model):
             "comment": self.comment,
             "location_id": self.location_id,
             "user_id": self.user_id,
+            "username": User.query.filter_by(id = self.user_id).first().username,
             "liked_users": [user.simple_serialize() for user in self.liked_users]
         }
     
@@ -149,7 +150,8 @@ class Post(db.Model):
             "comment": self.comment,
             "timestamp": str(self.timestamp),
             "location_id": self.location_id,
-            "user_id": self.user_id
+            "user_id": self.user_id,
+            "username": User.query.filter_by(id = self.user_id).first().username
         }
     
     def checked_serialize(self, uid):
@@ -162,6 +164,7 @@ class Post(db.Model):
             "comment": self.comment,
             "location_id": self.location_id,
             "user_id": self.user_id,
+            "username": User.query.filter_by(id = self.user_id).first().username,
             "liked_users": [user.simple_serialize() for user in self.liked_users],
             "is_editable": uid == self.user_id
         }

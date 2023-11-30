@@ -527,7 +527,8 @@ def verify_user():
 
     if user.password == hashed_password:
         res = {
-            "verify":True
+            "verify":True,
+            "user_id": user.serialize().get("id")
             }
         return success_response(res)
     else:
