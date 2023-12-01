@@ -49,9 +49,8 @@ Welcome to the backend repository of Ithaca Traveler! This repository houses the
 - posts (one to many: one user might have many posts)
 - posts_liked (many to many: one user might like many posts)
 
-# APIs
 
-# Ithaca Traveler API Specification
+# API Specifications
 
 ## Feature Routes
 
