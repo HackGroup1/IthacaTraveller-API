@@ -16,7 +16,7 @@ Welcome to the backend repository of Ithaca Traveler! This repository houses the
 - Google Cloud
 - Weather API
 
-# API Specification
+
 # Models
 
 ## Feature
@@ -116,7 +116,9 @@ We have two kinds of images:
 - Post images (stored under ~/images/posts/)
 We restrict each post to have at most one image, and restrict each user to have exactly one profile image. In this way, we can use user_id to name the user profile images and use post_id to name the post images.
 
-### Corresponding APIs:
+
+# API Specification
+## Corresponding APIs:
 - GET post image by post_id
   - /api/images/posts/<int:post_id>/
 - GET user profile image by user_id
