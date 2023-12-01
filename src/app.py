@@ -86,6 +86,11 @@ def add_feature():
     if name is None:
         return failure_response("missing parameter", 400)
 
+    feature = Feature.query.filter_by(name = name).first()
+
+    if feature is not None:
+        return failure_response("feature already exists", 400)
+
     feature = Feature(name = name)
 
     db.session.add(feature)
@@ -476,7 +481,7 @@ def add_user():
     db.session.add(user)
     db.session.commit()
 
-    return success_response({}, 201)
+    return success_response({"user_id": user.id}, 201)
 
 @app.route("/api/users/<int:user_id>/")
 def get_user_by_id(user_id):
