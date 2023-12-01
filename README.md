@@ -53,151 +53,213 @@ Welcome to the backend repository of Ithaca Traveler! This repository houses the
 - posts_liked (many to many: one user might like many posts)
 
 
-# API Specifications
+# API Specification
 
 ## Feature Routes
 
-### GET all features
-- Endpoint: `/api/features/`
-- Returns: List of all features.
+### Get All Features
+- **Endpoint:** `/api/features/`
+- **Method:** GET
+- **Description:** Retrieve all features.
+- **Response:** Success - List of features in JSON format.
 
-### GET feature by id
-- Endpoint: `/api/features/<int:feature_id>/`
-- Returns: Feature details based on the provided feature_id.
+### Get Feature by ID
+- **Endpoint:** `/api/features/<int:feature_id>/`
+- **Method:** GET
+- **Description:** Retrieve a feature by its ID.
+- **Response:** Success - Feature details in JSON format.
 
-### POST feature (create feature)
-- Endpoint: `/api/features/`
-- Payload: JSON body with a "name" parameter.
-- Returns: Empty response with status code 201 if successful.
+### Add Feature
+- **Endpoint:** `/api/features/`
+- **Method:** POST
+- **Description:** Add a new feature.
+- **Request Body:** JSON with "name" parameter.
+- **Response:** Success - Empty JSON with HTTP status 201.
 
-### POST feature by id (update feature)
-- Endpoint: `/api/features/<int:feature_id>/`
-- Payload: JSON body with a "name" parameter.
-- Returns: Empty response with status code 200 if successful.
+### Update Feature
+- **Endpoint:** `/api/features/<int:feature_id>/`
+- **Method:** POST
+- **Description:** Update a feature by its ID.
+- **Request Body:** JSON with "name" parameter.
+- **Response:** Success - Empty JSON.
 
-### POST feature by location_id (assign feature to location)
-- Endpoint: `/api/features/<int:feature_id>/locations/<int:location_id>/`
-- Returns: Empty response with status code 401 if successful.
+### Add Feature to Location
+- **Endpoint:** `/api/features/<int:feature_id>/locations/<int:location_id>/`
+- **Method:** POST
+- **Description:** Assign a feature to a location.
+- **Response:** Success - Empty JSON with HTTP status 401.
 
-### DELETE feature by id
-- Endpoint: `/api/features/<int:feature_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete Feature by ID
+- **Endpoint:** `/api/features/<int:feature_id>/`
+- **Method:** DELETE
+- **Description:** Delete a feature by its ID.
+- **Response:** Success - Empty JSON.
 
 ## Location Routes
 
-### GET all locations
-- Endpoint: `/api/locations/`
-- Returns: List of all locations.
+### Get All Locations
+- **Endpoint:** `/api/locations/`
+- **Method:** GET
+- **Description:** Retrieve all locations.
+- **Response:** Success - List of locations in JSON format.
 
-### GET locations’ id by feature
-- Endpoint: `/api/locations/features/<feature>/`
-- Returns: List of location IDs associated with the provided feature.
+### Get Locations ID by Feature
+- **Endpoint:** `/api/locations/features/<feature>/`
+- **Method:** GET
+- **Description:** Retrieve location IDs associated with a feature by feature name.
+- **Response:** Success - List of location IDs in JSON format.
 
-### GET location by id
-- Endpoint: `/api/locations/<int:location_id>/`
-- Returns: Location details based on the provided location_id.
+### Get Location by ID
+- **Endpoint:** `/api/locations/<int:location_id>/`
+- **Method:** GET
+- **Description:** Retrieve location details by its ID.
+- **Response:** Success - Location details in JSON format.
 
-### POST location (create location)
-- Endpoint: `/api/locations/`
-- Payload: JSON body with "longitude," "latitude," "name," and "address" parameters.
-- Returns: Empty response with status code 201 if successful.
+### Add Location
+- **Endpoint:** `/api/locations/`
+- **Method:** POST
+- **Description:** Add a new location.
+- **Request Body:** JSON with "longitude," "latitude," "name," "address," and optional "description" parameters.
+- **Response:** Success - Empty JSON with HTTP status 201.
 
-### POST location by id (update location)
-- Endpoint: `/api/locations/<int:location_id>/`
-- Payload: JSON body with optional "longitude," "latitude," "name," and "address" parameters.
-- Returns: Empty response with status code 200 if successful.
+### Update Location
+- **Endpoint:** `/api/locations/<int:location_id>/`
+- **Method:** POST
+- **Description:** Update a location by its ID.
+- **Request Body:** JSON with optional "longitude," "latitude," "name," "address" parameters.
+- **Response:** Success - Empty JSON.
 
-### DELETE location by id
-- Endpoint: `/api/locations/<int:location_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete Location by ID
+- **Endpoint:** `/api/locations/<int:location_id>/`
+- **Method:** DELETE
+- **Description:** Delete a location by its ID.
+- **Response:** Success - Empty JSON.
 
 ## Post Routes
 
-### GET all posts
-- Endpoint: `/api/posts/`
-- Returns: List of all posts.
+### Get All Posts
+- **Endpoint:** `/api/posts/`
+- **Method:** GET
+- **Description:** Retrieve all posts.
+- **Response:** Success - List of posts in JSON format.
 
-### GET post by id
-- Endpoint: `/api/posts/<int:post_id>/`
-- Returns: Post details based on the provided post_id.
+### Get Post by ID
+- **Endpoint:** `/api/posts/<int:post_id>/`
+- **Method:** GET
+- **Description:** Retrieve a post by its ID.
+- **Response:** Success - Post details in JSON format.
 
-### GET posts by location_id
-- Endpoint: `/api/posts/locations/<int:location_id>/`
-- Query Parameters: "user_id" (required), "sort" (optional, values: "recent" or "likes").
-- Returns: List of posts under a specific location, sorted based on the provided criteria.
+### Get Posts by Location ID
+- **Endpoint:** `/api/posts/locations/<int:location_id>/`
+- **Method:** GET
+- **Description:** Retrieve posts under a specific location by ID.
+- **Query Parameters:** "sort" (optional, values: "recent" or "likes"), "user_id" (required).
+- **Response:** Success - List of posts in JSON format.
 
-### POST post (create post)
-- Endpoint: `/api/posts/`
-- Payload: JSON body with "comment," "location_id," and "user_id" parameters.
-- Returns: JSON response with the new post_id and status code 201 if successful.
+### Add Post
+- **Endpoint:** `/api/posts/`
+- **Method:** POST
+- **Description:** Add a new post.
+- **Request Body:** JSON with "comment," "location_id," and "user_id" parameters.
+- **Response:** Success - JSON with "post_id" and HTTP status 201.
 
-### POST post by id (update post)
-- Endpoint: `/api/posts/<int:post_id>/`
-- Payload: JSON body with a "comment" parameter.
-- Returns: Empty response with status code 200 if successful.
+### Update Post
+- **Endpoint:** `/api/posts/<int:post_id>/`
+- **Method:** POST
+- **Description:** Update a post by its ID.
+- **Request Body:** JSON with "comment" parameter.
+- **Response:** Success - Empty JSON.
 
-### POST like post
-- Endpoint: `/api/posts/<int:post_id>/like/`
-- Payload: JSON body with a "user_id" parameter.
-- Returns: Empty response with status code 200 if successful.
+### Like Post
+- **Endpoint:** `/api/posts/<int:post_id>/like/`
+- **Method:** POST
+- **Description:** Like or unlike a post.
+- **Request Body:** JSON with "user_id" parameter.
+- **Response:** Success - Empty JSON.
 
-### DELETE post by id
-- Endpoint: `/api/posts/<int:post_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete Post by ID
+- **Endpoint:** `/api/posts/<int:post_id>/`
+- **Method:** DELETE
+- **Description:** Delete a post by its ID.
+- **Response:** Success - Empty JSON.
 
 ## User Routes
 
-### GET all users
-- Endpoint: `/api/users/`
-- Returns: List of all users.
+### Get All Users
+- **Endpoint:** `/api/users/`
+- **Method:** GET
+- **Description:** Retrieve all users.
+- **Response:** Success - List of users in JSON format.
 
-### POST user (create user)
-- Endpoint: `/api/users/`
-- Payload: JSON body with "username" and "password" parameters.
-- Returns: Empty response with status code 201 if successful.
+### Add User
+- **Endpoint:** `/api/users/`
+- **Method:** POST
+- **Description:** Add a new user.
+- **Request Body:** JSON with "username" and "password" parameters.
+- **Response:** Success - JSON with "user_id" and HTTP status 201.
 
-### GET user by id
-- Endpoint: `/api/users/<int:user_id>/`
-- Returns: User details based on the provided user_id.
+### Get User by ID
+- **Endpoint:** `/api/users/<int:user_id>/`
+- **Method:** GET
+- **Description:** Retrieve a user by its ID.
+- **Response:** Success - User details in JSON format.
 
-### DELETE user by id
-- Endpoint: `/api/users/<int:user_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete User by ID
+- **Endpoint:** `/api/users/<int:user_id>/`
+- **Method:** DELETE
+- **Description:** Delete a user by its ID.
+- **Response:** Success - Empty JSON.
 
-### POST verify user password and username
-- Endpoint: `/api/users/verify/`
-- Payload: JSON body with "username" and "password" parameters.
-- Returns: JSON response indicating whether the password is correct along with the user_id.
+### Verify User
+- **Endpoint:** `/api/users/verify/`
+- **Method:** POST
+- **Description:** Verify user credentials.
+- **Request Body:** JSON with "username" and "password" parameters.
+- **Response:** Success - JSON with "verify" (True/False) and "user_id" (if verified).
 
-## Extra Routes
+## Image Routes
 
-### Images
-#### GET post image by post_id
-- Endpoint: `/api/images/posts/<int:post_id>/`
-- Returns: Image file associated with the post_id.
+### Get Post Image by Post ID
+- **Endpoint:** `/api/images/posts/<int:post_id>/`
+- **Method:** GET
+- **Description:** Retrieve a post image by its post ID.
+- **Response:** Image file.
 
-#### GET user profile image by user_id
-- Endpoint: `/api/images/user/<int:user_id>/`
-- Returns: Image file associated with the user_id.
+### Get User Profile Image by User ID
+- **Endpoint:** `/api/images/user/<int:user_id>/`
+- **Method:** GET
+- **Description:** Retrieve a user profile image by its user ID.
+- **Response:** Image file.
 
-#### POST post image by post_id
-- Endpoint: `/api/images/posts/<int:post_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Post Post Image by Post ID
+- **Endpoint:** `/api/images/posts/<int:post_id>/`
+- **Method:** POST
+- **Description:** Upload a post image by its post ID.
+- **Response:** Success - Empty JSON.
 
-#### POST user profile image by user_id
-- Endpoint: `/api/images/user/<int:user_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Post User Profile Image by User ID
+- **Endpoint:** `/api/images/user/<int:user_id>/`
+- **Method:** POST
+- **Description:** Upload a user profile image by its user ID.
+- **Response:** Success - Empty JSON.
 
-#### DELETE post image by post_id
-- Endpoint: `/api/images/post/<int:post_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete Post Image by Post ID
+- **Endpoint:** `/api/images/post/<int:post_id>/`
+- **Method:** DELETE
+- **Description:** Delete a post image by its post ID.
+- **Response:** Success - Empty JSON.
 
-#### DELETE user profile image by user_id
-- Endpoint: `/api/images/user/<int:user_id>/`
-- Returns: Empty response with status code 200 if successful.
+### Delete User Profile Image by User ID
+- **Endpoint:** `/api/images/user/<int:user_id>/`
+- **Method:** DELETE
+- **Description:** Delete a user profile image by its user ID.
+- **Response:** Success - Empty JSON.
 
-### Weather
-#### GET weather at the given position
-- Endpoint: `/api/weather/`
-- Payload: JSON body with "longitude" and "latitude" parameters.
-- Returns: Weather information in the format specified by the front end.
+## Weather Route
+
+### Get Weather at Given Position
+- **Endpoint:** `/api/weather/`
+- **Method:** GET
+- **Description:** Obtain weather information at the given position.
+- **Query Parameters:** "longitude" and "latitude" (sent as arguments).
+- **Response:** Weather information in the format specified by the frontend.
