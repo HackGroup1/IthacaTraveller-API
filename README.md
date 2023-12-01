@@ -30,6 +30,7 @@ Welcome to the backend repository of Ithaca Traveler! This repository houses the
 - latitude
 - name
 - description
+- address
 - posts (one to many: one location might have many corresponding posts)
 - features (many to many: one location could have many features)
 
