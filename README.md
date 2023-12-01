@@ -51,90 +51,151 @@ Welcome to the backend repository of Ithaca Traveler! This repository houses the
 
 # APIs
 
-## Feature
-- GET all features
-  - /api/features/
-- GET feature by id
-  - /api/features/<int:feature_id>/
-- POST feature (create feature)
-  - /api/features/
-- POST feature by id (update feature)
-  - /api/features/<int:feature_id>/
-- POST feature by location_id (assign feature to location)
-  - /api/features/<int:feature_id>/locations/<int:location_id>/
-- DELETE feature by id
-  - /api/features/<int:feature_id>/
+# Ithaca Traveler API Specification
 
-## Location
-- GET all locations
-  - /api/locations/
-- GET location by id
-  - /api/locations/<int:location_id>/
-- GET locations’ id by feature
-  - /api/locations/features/<feature>/
-- POST location (create location)
-  - /api/locations/
-- POST location by id (update location)
-  - /api/locations/<int:location_id>/
-- DELETE location by id
-  - /api/locations/<int:location_id>/
+## Feature Routes
 
-## Post
-- GET all posts
-  - /api/posts/
-- GET post by id
-  - /api/locations/<int:location_id>/
-- GET posts by location_id (requires user_id to check which posts are editable) takes in parameter sort to return in order by most like or recent
-  - /api/posts/locations/<int:location_id>/
-  - /api/posts/locations/<int:location_id>?sorted_by=recent
-- POST post (create post, requires its location and owner/user)
-  - /api/posts/
-- POST post by location_id and user_id (edit post, requires)
-- DELETE post by id
-  - /api/posts/<int:post_id>/
-- POST like post
-  - /api/posts/<int:post_id>/like/
+### GET all features
+- Endpoint: `/api/features/`
+- Returns: List of all features.
 
-## User
-- GET all users
-  - /api/users/
-- GET user by id
-  - /api/users/<int:user_id>/
-- GET verify user password and username
-  - /api/users/verify/
-- POST user (create user, requires password)
-  - /api/users/
-- POST user by id (update user info, requires password)
-- DELETE user by id
-  - /api/users/<int:user_id>/
+### GET feature by id
+- Endpoint: `/api/features/<int:feature_id>/`
+- Returns: Feature details based on the provided feature_id.
 
-# Extra things
+### POST feature (create feature)
+- Endpoint: `/api/features/`
+- Payload: JSON body with a "name" parameter.
+- Returns: Empty response with status code 201 if successful.
 
-## Images
-We store images in server directories.
-We have two kinds of images: 
-- User profile images (stored under ~/images/users/)
-- Post images (stored under ~/images/posts/)
-We restrict each post to have at most one image, and restrict each user to have exactly one profile image. In this way, we can use user_id to name the user profile images and use post_id to name the post images.
+### POST feature by id (update feature)
+- Endpoint: `/api/features/<int:feature_id>/`
+- Payload: JSON body with a "name" parameter.
+- Returns: Empty response with status code 200 if successful.
 
+### POST feature by location_id (assign feature to location)
+- Endpoint: `/api/features/<int:feature_id>/locations/<int:location_id>/`
+- Returns: Empty response with status code 401 if successful.
 
-## Corresponding APIs:
-- GET post image by post_id
-  - /api/images/posts/<int:post_id>/
-- GET user profile image by user_id
-  - /api/images/user/<int:user_id>/
-- POST post image by post_id
-  - /api/images/posts/<int:post_id>/
-- POST user profile image by user_id
-  - /api/images/user/<int:user_id>/
-- DELETE post image by post_id
-  - /api/images/post/<int:post_id>/
-- DELETE user profile image by user_id
-  - /api/images/user/<int:user_id>/
+### DELETE feature by id
+- Endpoint: `/api/features/<int:feature_id>/`
+- Returns: Empty response with status code 200 if successful.
 
-## Weather
-Obtain weather information using API by weatherapi.com
-Returns in the format specified by the front end
+## Location Routes
 
-- GET weather at the given position (requires longitude and latitude (sent as JSON))
-  - /api/weather/
+### GET all locations
+- Endpoint: `/api/locations/`
+- Returns: List of all locations.
+
+### GET locations’ id by feature
+- Endpoint: `/api/locations/features/<feature>/`
+- Returns: List of location IDs associated with the provided feature.
+
+### GET location by id
+- Endpoint: `/api/locations/<int:location_id>/`
+- Returns: Location details based on the provided location_id.
+
+### POST location (create location)
+- Endpoint: `/api/locations/`
+- Payload: JSON body with "longitude," "latitude," "name," and "address" parameters.
+- Returns: Empty response with status code 201 if successful.
+
+### POST location by id (update location)
+- Endpoint: `/api/locations/<int:location_id>/`
+- Payload: JSON body with optional "longitude," "latitude," "name," and "address" parameters.
+- Returns: Empty response with status code 200 if successful.
+
+### DELETE location by id
+- Endpoint: `/api/locations/<int:location_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+## Post Routes
+
+### GET all posts
+- Endpoint: `/api/posts/`
+- Returns: List of all posts.
+
+### GET post by id
+- Endpoint: `/api/posts/<int:post_id>/`
+- Returns: Post details based on the provided post_id.
+
+### GET posts by location_id
+- Endpoint: `/api/posts/locations/<int:location_id>/`
+- Query Parameters: "user_id" (required), "sort" (optional, values: "recent" or "likes").
+- Returns: List of posts under a specific location, sorted based on the provided criteria.
+
+### POST post (create post)
+- Endpoint: `/api/posts/`
+- Payload: JSON body with "comment," "location_id," and "user_id" parameters.
+- Returns: JSON response with the new post_id and status code 201 if successful.
+
+### POST post by id (update post)
+- Endpoint: `/api/posts/<int:post_id>/`
+- Payload: JSON body with a "comment" parameter.
+- Returns: Empty response with status code 200 if successful.
+
+### POST like post
+- Endpoint: `/api/posts/<int:post_id>/like/`
+- Payload: JSON body with a "user_id" parameter.
+- Returns: Empty response with status code 200 if successful.
+
+### DELETE post by id
+- Endpoint: `/api/posts/<int:post_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+## User Routes
+
+### GET all users
+- Endpoint: `/api/users/`
+- Returns: List of all users.
+
+### POST user (create user)
+- Endpoint: `/api/users/`
+- Payload: JSON body with "username" and "password" parameters.
+- Returns: Empty response with status code 201 if successful.
+
+### GET user by id
+- Endpoint: `/api/users/<int:user_id>/`
+- Returns: User details based on the provided user_id.
+
+### DELETE user by id
+- Endpoint: `/api/users/<int:user_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+### POST verify user password and username
+- Endpoint: `/api/users/verify/`
+- Payload: JSON body with "username" and "password" parameters.
+- Returns: JSON response indicating whether the password is correct along with the user_id.
+
+## Extra Routes
+
+### Images
+#### GET post image by post_id
+- Endpoint: `/api/images/posts/<int:post_id>/`
+- Returns: Image file associated with the post_id.
+
+#### GET user profile image by user_id
+- Endpoint: `/api/images/user/<int:user_id>/`
+- Returns: Image file associated with the user_id.
+
+#### POST post image by post_id
+- Endpoint: `/api/images/posts/<int:post_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+#### POST user profile image by user_id
+- Endpoint: `/api/images/user/<int:user_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+#### DELETE post image by post_id
+- Endpoint: `/api/images/post/<int:post_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+#### DELETE user profile image by user_id
+- Endpoint: `/api/images/user/<int:user_id>/`
+- Returns: Empty response with status code 200 if successful.
+
+### Weather
+#### GET weather at the given position
+- Endpoint: `/api/weather/`
+- Payload: JSON body with "longitude" and "latitude" parameters.
+- Returns: Weather information in the format specified by the front end.
