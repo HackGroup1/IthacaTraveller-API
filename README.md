@@ -117,7 +117,6 @@ We have two kinds of images:
 We restrict each post to have at most one image, and restrict each user to have exactly one profile image. In this way, we can use user_id to name the user profile images and use post_id to name the post images.
 
 
-# API Specification
 ## Corresponding APIs:
 - GET post image by post_id
   - /api/images/posts/<int:post_id>/
