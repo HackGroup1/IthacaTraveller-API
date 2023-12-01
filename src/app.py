@@ -479,7 +479,7 @@ def add_user():
     db.session.add(user)
     db.session.commit()
 
-    return success_response({}, 201)
+    return success_response({"user_id": user.id}, 201)
 
 @app.route("/api/users/<int:user_id>/")
 def get_user_by_id(user_id):
