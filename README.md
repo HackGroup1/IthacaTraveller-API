@@ -16,7 +16,7 @@ A project for Cornell App Dev Hack Challenge FA 2023
 
 Welcome to the backend repository of Ithaca Traveler! This repository houses the server-side code and database management for our travel exploration app. The backend is designed to support the iOS and Android applications, providing a seamless and efficient experience for users.
 
-# Ultilized libraries & Services
+# Utilized libraries & Services
 - Flask
 - SQL
 - SQLalchemy
