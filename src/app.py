@@ -45,7 +45,7 @@ def failure_response(message, code = 404):
 
 @app.route("/")
 def front_page():
-    return "Hello!"
+    return "Hello! :D"
 
 
 #### ROUTES ####
