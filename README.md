@@ -2,6 +2,11 @@
 
 This was created by Frank Dai and Huajie Zhong!
 
+A project for Cornell App Dev Hack Challenge FA 2023
+
+
+# ✨✨✨ BEST BACKEND AWARD ✨✨✨
+
 # GitHub Repositories
 [Ithaca Traveller - IOS](https://github.com/HackGroup1/IthacaTraveller-IOS)
 
